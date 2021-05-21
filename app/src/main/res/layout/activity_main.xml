@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="apps.webscare.voicerecoderhd.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_30sdp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RECORDER"
+            android:letterSpacing="0.1"
+            android:textSize="@dimen/_30sdp"
+            android:textColor="@color/textColor" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speak and Listen Your Voice"
+            android:textColor="@color/textSlogan"
+            android:textSize="@dimen/_14sdp"/>
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="@dimen/_90sdp"
+        android:layout_marginRight="30dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_wave" />
+
+    <LinearLayout
+        android:id="@+id/bottomlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/image"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <soup.neumorphism.NeumorphFloatingActionButton
+            style="@style/Widget.Neumorph.FloatingActionButton"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/mic"
+            android:padding="@dimen/_20sdp"
+            app:neumorph_shapeType="flat"
+            app:neumorph_shadowElevation="6dp"
+            app:neumorph_lightSource="leftTop"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="@dimen/_50sdp"
+            app:neumorph_backgroundColor="#FFE8DB"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/micClick"
+            android:layout_gravity="center"
+            android:textColor="@color/textMicClick"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_6sdp"/>
+
+        <TextView
+            android:id="@+id/recording_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to record"
+            android:layout_gravity="center"
+            android:textColor="@color/textMicClick"
+            android:textSize="@dimen/_14sdp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+
+            <soup.neumorphism.NeumorphCardView
+                app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                app:neumorph_backgroundColor="@color/buttonPressedColor"
+                app:neumorph_shapeType="basin"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="40dp">
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp">
+
+                    <soup.neumorphism.NeumorphImageView
+                        android:id="@+id/echo_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/echo_xml"
+                        app:neumorph_shapeType="basin"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:adjustViewBounds="true"/>
+                    <soup.neumorphism.NeumorphTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recorder"
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:textColor="@color/clickedBtntext"/>
+                </RelativeLayout>
+
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                app:neumorph_backgroundColor="@color/buttonUnPressecColor"
+                app:neumorph_shapeType="flat"
+                android:layout_centerHorizontal="true">
+                <RelativeLayout
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp">
+
+                    <soup.neumorphism.NeumorphImageView
+                        android:id="@+id/music_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_music"
+                        app:neumorph_shapeType="flat"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:adjustViewBounds="true"/>
+                    <soup.neumorphism.NeumorphTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tracks"
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:textColor="@color/unclickedBtntext"/>
+                </RelativeLayout>
+            </soup.neumorphism.NeumorphCardView>
+
+            <soup.neumorphism.NeumorphCardView
+                app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                app:neumorph_backgroundColor="@color/buttonUnPressecColor"
+                app:neumorph_shapeType="flat"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="40dp">
+                <RelativeLayout
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp">
+
+                    <soup.neumorphism.NeumorphImageView
+                        android:id="@+id/setting_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_setting"
+                        app:neumorph_shapeType="flat"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:adjustViewBounds="true"/>
+                    <soup.neumorphism.NeumorphTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Setting"
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:textColor="@color/unclickedBtntext"/>
+                </RelativeLayout>
+            </soup.neumorphism.NeumorphCardView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

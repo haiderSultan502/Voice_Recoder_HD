@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="background">#E6E7EB</color>
+    <color name="textColor">#8e8e8e</color>
+    <color name="textSlogan">#B1B1B1</color>
+    <color name="textMicClick">#BFBFBF</color>
+    <color name="buttonUnPressecColor">#EFF3FF</color>
+    <color name="buttonPressedColor">#FFE8DB</color>
+    <color name="clickedBtntext">#F3722C</color>
+    <color name="unclickedBtntext">#AFAFAF</color>
+</resources>
