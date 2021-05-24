@@ -36,4 +36,7 @@ dependencies {
     // soft UI neuromorphism library
     implementation 'com.github.fornewid:neumorphism:0.3.0'
 
+    //recycler view  library
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
 }

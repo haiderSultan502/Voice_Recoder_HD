@@ -11,16 +11,14 @@ import androidx.fragment.app.Fragment;
 
 import apps.webscare.voicerecoderhd.R;
 
-public class RecorderFragment extends Fragment {
-
+public class SettingFragment extends Fragment {
 
     View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        view =inflater.inflate(R.layout.recorder_fragment,container,false);
+        view =inflater.inflate(R.layout.setting_fragment,container,false);
 
         return view;
     }

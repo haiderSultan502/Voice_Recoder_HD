@@ -11,4 +11,5 @@
     <color name="buttonPressedColor">#FFE8DB</color>
     <color name="clickedBtntext">#F3722C</color>
     <color name="unclickedBtntext">#AFAFAF</color>
+    <color name="recordingItemBg">#FEF0E8</color>
 </resources>
