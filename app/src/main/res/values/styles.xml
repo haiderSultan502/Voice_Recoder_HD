@@ -19,4 +19,9 @@
         <!--        <item name="neumorph_cornerSizeBottomRight">16dp</item>-->
     </style>
 
+    <style name="CustomShapeAppearanceRecordingItem">
+        <item name="neumorph_cornerFamily">rounded</item>
+        <item name="neumorph_cornerSize">8dp</item>
+    </style>
+
 </resources>
