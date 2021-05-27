@@ -1,11 +1,28 @@
 package apps.webscare.voicerecoderhd;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
+import java.util.List;
 
 import apps.webscare.voicerecoderhd.fragments.RecorderFragment;
 import apps.webscare.voicerecoderhd.fragments.SettingFragment;
@@ -15,6 +32,13 @@ import soup.neumorphism.NeumorphImageView;
 import soup.neumorphism.NeumorphTextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+
+//    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 100;
+//    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 200;
+//    private static final String[] permissions = {Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private boolean audioRecordingPermissionGranted = false;
+
 
     FragmentTransaction fragmentTransaction;
     NeumorphCardView neumorphRecorderCardView,neumorphTrackCardView,neumorphSettingCardView;
@@ -29,9 +53,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        replaceFragmnet(new RecorderFragment());
         viewBndings();
+
+        replaceFragmnet(new RecorderFragment());
+
+        Util.requestMultplePermission(this);
+
+
+//        Util.requestPermission(this,permissions[0],REQUEST_RECORD_AUDIO_PERMISSION);
+//        Util.requestPermission(this,permissions[1],REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
     }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        switch (requestCode)
+//        {
+//            case REQUEST_RECORD_AUDIO_PERMISSION:
+//                audioRecordingPermissionGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+//                break;
+//        }
+//
+//        if (!audioRecordingPermissionGranted){
+//            finish();
+//        }
+//    }
+
 
     private void viewBndings() {
 
@@ -79,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
 
     private void setBtn(int index, String checkBtnStatus) {
 

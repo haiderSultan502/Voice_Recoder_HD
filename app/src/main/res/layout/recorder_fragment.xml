@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_slogan" />
 
     <soup.neumorphism.NeumorphFloatingActionButton
-        android:id="@+id/neumorphFloatingActionButton"
+        android:id="@+id/btn_record"
         style="@style/Widget.Neumorph.FloatingActionButton"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/neumorphFloatingActionButton"
+        app:layout_constraintTop_toBottomOf="@+id/btn_record"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView

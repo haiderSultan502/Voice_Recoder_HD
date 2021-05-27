@@ -39,4 +39,8 @@ dependencies {
     //recycler view  library
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
+    // Dexter runtime permissions
+    implementation 'com.karumi:dexter:4.2.0' //dexter take permission runtime
+
+
 }
