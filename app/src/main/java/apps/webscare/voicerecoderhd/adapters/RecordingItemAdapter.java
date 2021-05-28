@@ -1,9 +1,12 @@
 package apps.webscare.voicerecoderhd.adapters;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -14,20 +17,30 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import apps.webscare.voicerecoderhd.MainActivity;
 import apps.webscare.voicerecoderhd.R;
+import apps.webscare.voicerecoderhd.fragments.RecorderFragment;
+import apps.webscare.voicerecoderhd.models.ModelRecordings;
 import soup.neumorphism.NeumorphCardView;
 import soup.neumorphism.NeumorphImageView;
+import soup.neumorphism.NeumorphTextView;
 
 public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdapter.ItemViewHolder> {
 
     View view;
     MainActivity context;
     Boolean checkRecordingStatus= false;
+    ArrayList<ModelRecordings> audioArrayList;
+    MediaPlayer player;
 
 
-    public RecordingItemAdapter(Context context){
+    public RecordingItemAdapter(Context context,ArrayList<ModelRecordings> audioArrayList){
         this.context = (MainActivity) context;
+        this.audioArrayList = audioArrayList;
+        player = new MediaPlayer();
     }
 
     @NonNull
@@ -40,11 +53,16 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecordingItemAdapter.ItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecordingItemAdapter.ItemViewHolder holder, final int position) {
 
         holder.cardViewParentItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                Uri filePath = audioArrayList.get(position).getUri();
+
+
 
                 if (checkRecordingStatus)
                 {
@@ -53,6 +71,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
                     holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.recordingItemBgUnPressedColor));
                     holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon);
 
+                    stopPlayingRecording();
                     checkRecordingStatus=false;
                 }
                 else
@@ -63,6 +82,8 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
                     holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.buttonPressedColor));
                     holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
 
+                    playRecording(filePath);
+
                     checkRecordingStatus=true;
                 }
 
@@ -70,11 +91,44 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
 
             }
         });
+
+        holder.recordingName.setText(audioArrayList.get(position).getTitle());
+        holder.dateAndTime.setText(audioArrayList.get(position).getDate());
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return audioArrayList.size();
+    }
+
+    private void playRecording(Uri uri) {
+        player = new MediaPlayer();
+        try {
+            player.setDataSource(context,uri);
+
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopPlayingRecording();
+                }
+            });
+
+            player.prepare();
+            player.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void stopPlayingRecording() {
+
+        if (player!=null)
+        {
+            player.release();
+            player = null;
+        }
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder
@@ -83,6 +137,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
         NeumorphCardView btnPlay;
         NeumorphImageView neumorphImageView;
         RelativeLayout cardViewParentItem;
+        NeumorphTextView recordingName,dateAndTime;
 
 
 
@@ -93,6 +148,8 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             btnPlay = itemView.findViewById(R.id.btn_play);
             neumorphImageView = itemView.findViewById(R.id.play_image);
             cardViewParentItem = itemView.findViewById(R.id.card_view_parent_item);
+            recordingName = itemView.findViewById(R.id.recordingName);
+            dateAndTime = itemView.findViewById(R.id.time_and_date);
 
         }
 

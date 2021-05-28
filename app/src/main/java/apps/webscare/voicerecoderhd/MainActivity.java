@@ -34,11 +34,6 @@ import soup.neumorphism.NeumorphTextView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-//    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 100;
-//    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 200;
-//    private static final String[] permissions = {Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private boolean audioRecordingPermissionGranted = false;
-
 
     FragmentTransaction fragmentTransaction;
     NeumorphCardView neumorphRecorderCardView,neumorphTrackCardView,neumorphSettingCardView;
@@ -53,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         viewBndings();
 
         replaceFragmnet(new RecorderFragment());
@@ -60,26 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Util.requestMultplePermission(this);
 
 
-//        Util.requestPermission(this,permissions[0],REQUEST_RECORD_AUDIO_PERMISSION);
-//        Util.requestPermission(this,permissions[1],REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        switch (requestCode)
-//        {
-//            case REQUEST_RECORD_AUDIO_PERMISSION:
-//                audioRecordingPermissionGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-//                break;
-//        }
-//
-//        if (!audioRecordingPermissionGranted){
-//            finish();
-//        }
-//    }
-
 
     private void viewBndings() {
 
@@ -97,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentTransaction.replace(R.id.frameLayout,fragment);
         fragmentTransaction.commit();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -127,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-
 
     private void setBtn(int index, String checkBtnStatus) {
 

@@ -2,12 +2,7 @@ package apps.webscare.voicerecoderhd;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -24,7 +19,8 @@ public class Util {
         Dexter.withActivity(activity)
                 .withPermissions(
                         Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
@@ -34,7 +30,7 @@ public class Util {
                         }
                         if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()){
                             Log.d("permission  Denied", "onPermissionsChecked: permission  denied " );
-                            activity.finish();
+//                            activity.finish();
                         }
                     }
 
