@@ -4,7 +4,18 @@ import android.net.Uri;
 
 public class ModelRecordings {
 
-    String title,date;
+    String title;
+    String date;
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    String duration;
     Uri uri;
 
     public String getTitle() {

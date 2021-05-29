@@ -96,6 +96,7 @@
             android:src="@drawable/ic_recordingbtnplay" />
 
         <ImageView
+            android:id="@+id/previous_recording"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_alignParentBottom="true"
@@ -106,6 +107,7 @@
             android:src="@drawable/ic_previousbtn" />
 
         <ImageView
+            android:id="@+id/next_recording"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

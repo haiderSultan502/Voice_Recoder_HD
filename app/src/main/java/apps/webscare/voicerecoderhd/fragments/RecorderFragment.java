@@ -7,12 +7,14 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,10 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     static String filePath,audioFile;
     MediaRecorder recorder;
     Boolean recordingStartStatus=false;
+    TextView timeCount;
+    CountDownTimer countDownTimer;
+    int second,minute,hour;
+
 
 
 
@@ -58,8 +64,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     private void viewBinds() {
 
         btnStartRecording = view.findViewById(R.id.btn_record);
-
-
+        timeCount = view.findViewById(R.id.time_count);
         btnStartRecording.setOnClickListener(this);
 
     }
@@ -77,7 +82,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
                     recordingStartStatus = true;
                 }
                 else {
-                    Toast.makeText(getActivity(), "Recording Stop", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Recording End", Toast.LENGTH_SHORT).show();
                     btnStartRecording.setShapeType(0);
                     stopRecording();
                     recordingStartStatus = false;
@@ -90,6 +95,13 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
 
     private void stopRecording() {
+
+        //cancel the count down timer
+        countDownTimer.cancel();
+        second = 0;
+        minute = 0;
+        hour = 0;
+        timeCount.setText("00:00:00");
 
         if (recorder != null)
         {
@@ -104,8 +116,11 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     private void createContentValues(){
 
-        //creating content resolver and put the values
-        ContentValues values = new ContentValues(); //content values  used to store a set of values that the ContentResolver can process.
+        //creating content value object to store the data in table using  key value pair and here the key is column name,
+        //and  the table in which we store data is  MediaStore.Audio.Media.EXTERNAL_CONTENT_URI which is
+        // simply insert data in database using content values
+
+        ContentValues values = new ContentValues();
         values.put(MediaStore.Audio.Media.DATA,filePath);
         values.put(MediaStore.Audio.Media.MIME_TYPE,"audio/mpeg4");
         values.put(MediaStore.Audio.Media.TITLE,audioFile);
@@ -123,7 +138,6 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 //        filePath = Environment.getExternalStorageDirectory().getPath() + "/" + uuid + ".3gp";
 //        Log.d("file Location", "startRecording: " + filePath);
 
-        Toast.makeText(getActivity(), filePath, Toast.LENGTH_SHORT).show();
 
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -138,8 +152,42 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         }
 
         recorder.start();
+        
+        showTimer();
 
 
+    }
+
+    private void showTimer() {
+
+        countDownTimer = new CountDownTimer(Long.MAX_VALUE,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                second++;
+                timeCount.setText(recorderTime());
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+
+        countDownTimer.start();
+    }
+
+    private String recorderTime() {
+        if (second == 60){
+            minute++;
+            second = 0;
+        }
+        if (minute == 60){
+            hour++;
+            minute = 0;
+        }
+
+        return String.format("%02d:%02d:%02d",hour,minute,second);
     }
 
     private void createFolderToStoreRecording() {
@@ -149,7 +197,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
             myDirectory.mkdirs();
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("mmddyyyyhhmm");
+        Date dates = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMddyyyyhhmmssSS");
         String date = dateFormat.format(new Date());
         audioFile = "REC" +  date;
 
