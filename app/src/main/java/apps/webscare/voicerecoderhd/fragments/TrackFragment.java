@@ -6,12 +6,16 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +39,9 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
     View view,views;
     RecyclerView rvRecordings;
     ImageView btnPlayRecording,nextRecording,previousRecording;
+    SeekBar seekBar;
+    int currentPosition,totalDuration;
+    TextView current,total;
 
     MediaPlayer player;
     Boolean recordingPlayStatus=false;
@@ -48,10 +55,28 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
         view =inflater.inflate(R.layout.track_fragment,container,false);
 
-
         viewBindings();
         initialization();
         getAudioRecordings();
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                currentPosition = seekBar.getProgress();
+                player.seekTo( (int) currentPosition );
+
+            }
+        });
 //        setDataInRecyclerView();
 
         return view;
@@ -72,7 +97,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
                 String type = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE));
                 ModelRecordings modelRecordings = new ModelRecordings();
                 modelRecordings.setTitle(title);
-                File file = new File(data); //This constructor creates a new File instance by converting the given pathname string into an abstract pathname which helps to get the value when the file was last modified by calling file.lastModified()
+                File file = new File(data); //This constructor creates wave_anim new File instance by converting the given pathname string into an abstract pathname which helps to get the value when the file was last modified by calling file.lastModified()
                 Date date = new Date(file.lastModified());
                 SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
 
@@ -83,7 +108,9 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                 retriever.setDataSource(data);
 
-                modelRecordings.setDuration(timeConversion(Long.parseLong(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION))));
+                String duration = timeConversion(Long.parseLong(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)));
+
+                modelRecordings.setDuration(duration);
 
                 audioArrayList.add(modelRecordings);
             } while(cursor.moveToNext());
@@ -96,8 +123,6 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
             public void onItemClick(int pos, View v) {
                 views = v;
                 playRecording(pos);
-
-
             }
         });
     }
@@ -131,11 +156,48 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
         audio_index = pos;
 
-    }
-
-    private void setDataInRecyclerView() {
+        setAudioProgress();
 
     }
+
+    private void setAudioProgress() {
+
+        currentPosition = player.getCurrentPosition();
+        totalDuration = player.getDuration();
+
+        seekBar.setMax(totalDuration);
+
+        current.setText(timeConversion((long) currentPosition));
+        total.setText(timeConversion((long) totalDuration));
+
+
+        final Handler handler = new Handler(Looper.getMainLooper());
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                currentPosition = player.getCurrentPosition();
+                current.setText(timeConversion((long) currentPosition));
+                seekBar.setProgress(currentPosition);
+                seekBar.setKeyProgressIncrement(1);
+                handler.postDelayed(this,1000);
+            }
+        };
+        handler.postDelayed(runnable,1000);
+
+
+//        final Handler handler = new Handler();
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                currentPosition = player.getCurrentPosition();
+//                current.setText(timeConversion((long) currentPosition));
+//                seekBar.setProgress(currentPosition);
+//                handler.postDelayed(this,1000);
+//            }
+//        };
+//        handler.postDelayed(runnable,1000);
+    }
+
     private void initialization() {
 
         audioArrayList = new ArrayList<>();
@@ -146,9 +208,12 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
     private void viewBindings() {
         rvRecordings = view.findViewById(R.id.rv_recordings);
+        seekBar = view.findViewById(R.id.recording_progress);
         btnPlayRecording = view.findViewById(R.id.recording_play_btn);
         nextRecording = view.findViewById(R.id.next_recording);
         previousRecording = view.findViewById(R.id.previous_recording);
+        current = view.findViewById(R.id.current);
+        total = view.findViewById(R.id.total);
 
         btnPlayRecording.setOnClickListener(this);
         nextRecording.setOnClickListener(this);
@@ -157,7 +222,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setRecyclerView() {
-        // set a LinearLayoutManager
+        // set wave_anim LinearLayoutManager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
         rvRecordings.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView

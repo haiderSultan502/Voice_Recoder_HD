@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.audiofx.Visualizer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +46,9 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     Boolean recordingStartStatus=false;
     TextView timeCount;
     CountDownTimer countDownTimer;
-    int second,minute,hour;
+    int second = -1,minute,hour;
+
+    LottieAnimationView lottieAnimationView;
 
 
 
@@ -65,6 +70,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         btnStartRecording = view.findViewById(R.id.btn_record);
         timeCount = view.findViewById(R.id.time_count);
+        lottieAnimationView = view.findViewById(R.id.audio_wave);
+
         btnStartRecording.setOnClickListener(this);
 
     }
@@ -77,12 +84,14 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_record:
                 if (recordingStartStatus == false){
                     Toast.makeText(getActivity(), "Recording Start", Toast.LENGTH_SHORT).show();
+                    lottieAnimationView.playAnimation();
                     btnStartRecording.setShapeType(2);
                     startRecording();
                     recordingStartStatus = true;
                 }
                 else {
                     Toast.makeText(getActivity(), "Recording End", Toast.LENGTH_SHORT).show();
+                    lottieAnimationView.pauseAnimation();
                     btnStartRecording.setShapeType(0);
                     stopRecording();
                     recordingStartStatus = false;
@@ -98,7 +107,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         //cancel the count down timer
         countDownTimer.cancel();
-        second = 0;
+        second = -1;
         minute = 0;
         hour = 0;
         timeCount.setText("00:00:00");
@@ -141,7 +150,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); //M4A is a file extension for an audio file encoded with advanced audio coding (AAC) which is a lossy compression. M4A stands for MPEG 4 Audio.
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); //M4A is wave_anim file extension for an audio file encoded with advanced audio coding (AAC) which is wave_anim lossy compression. M4A stands for MPEG 4 Audio.
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         recorder.setOutputFile(filePath);
 

@@ -8,29 +8,29 @@
 
 
     <ImageView
-                android:id="@+id/title_track"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:src="@drawable/ic_txt_title_tracks"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/title_track"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_txt_title_tracks"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-                android:id="@+id/txt_about_track"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Select the Track"
-                android:textAlignment="center"
-                android:textColor="@color/textSlogan"
-                android:textSize="18dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_track" />
+        android:id="@+id/txt_about_track"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Select the Track"
+        android:textAlignment="center"
+        android:textColor="@color/textSlogan"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_track" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_recordings"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_about_track"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout">
 
-        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -75,15 +75,33 @@
             android:src="@drawable/ic_cancel_btn"
             app:neumorph_shapeType="flat" />
 
-        <ImageView
+        <TextView
+            android:id="@+id/current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"/>
+
+        <SeekBar
             android:id="@+id/recording_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:progressTint="@color/clickedBtntext"
+            android:thumbTint="@color/clickedBtntext"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_recordingprogress" />
+            android:layout_toRightOf="@+id/current"
+            android:layout_toLeftOf="@+id/total"/>
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
 
         <ImageView
             android:id="@+id/recording_play_btn"
@@ -121,4 +139,4 @@
     </RelativeLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

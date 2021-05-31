@@ -42,5 +42,8 @@ dependencies {
     // Dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0' //dexter take permission runtime
 
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
 
 }

@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             neumorphCardView.setBackgroundColor(getResources().getColor(btnBgColor));
-            neumorphImageView.setColorFilter(getResources().getColor(btnTxtColor));  // Change fillColor of a vector
+            neumorphImageView.setColorFilter(getResources().getColor(btnTxtColor));  // Change fillColor of wave_anim vector
             neumorphTextView.setTextColor(getResources().getColor(btnTxtColor));
 
     }
