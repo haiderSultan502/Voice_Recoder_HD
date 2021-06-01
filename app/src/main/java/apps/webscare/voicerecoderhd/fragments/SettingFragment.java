@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +20,7 @@ public class SettingFragment extends Fragment implements AdapterView.OnItemSelec
     View view;
     Spinner spinnerRecordingFormat,rateSpinner,encoderBitRateSpinner;
 
-    String[] recordingFoormat={"BAC (m4a) - Good quality","BBC (MP3) - Good quality"};
+    String[] recordingFoormat={"3gp","m4a"};
 
     @Nullable
     @Override
@@ -54,6 +55,21 @@ public class SettingFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        Toast.makeText(getActivity(), recordingFoormat[position], Toast.LENGTH_LONG).show();
+        String recordingFormat = recordingFoormat[position];
+        switch (recordingFormat)
+        {
+
+            case "3gp":
+                RecorderFragment.setOutputFormat = 1;
+                RecorderFragment.setOutputExt = "3gp";
+                break;
+            case "M4a":
+                RecorderFragment.setOutputFormat = 2;
+                RecorderFragment.setOutputExt = "m4a";
+                break;
+        }
 
     }
 

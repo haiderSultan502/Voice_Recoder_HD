@@ -57,48 +57,48 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
     @Override
     public void onBindViewHolder(@NonNull final RecordingItemAdapter.ItemViewHolder holder, final int position) {
 
-        holder.cardViewParentItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onItemClick(position,v);
-            }
-        });
 //        holder.cardViewParentItem.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//
-//
-//                Uri filePath = audioArrayList.get(position).getUri();
-//
-//
-//
-//                if (checkRecordingStatus)
-//                {
-//                    holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_recordingitemunpressedbg));
-//                    holder.btnPlay.setShapeType(0);
-//                    holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.recordingItemBgUnPressedColor));
-//                    holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon);
-//
-//                    stopPlayingRecording();
-//                    checkRecordingStatus=false;
-//                }
-//                else
-//                {
-//                    Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-//                    holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_item_bg));
-//                    holder.btnPlay.setShapeType(2);
-//                    holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.buttonPressedColor));
-//                    holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
-//
-//                    playRecording(filePath);
-//
-//                    checkRecordingStatus=true;
-//                }
-//
-//
-//
+//                onItemClickListener.onItemClick(position,v);
 //            }
 //        });
+        holder.cardViewParentItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Uri filePath = audioArrayList.get(position).getUri();
+
+
+//                onItemClickListener.onItemClick(position,v);
+                if (checkRecordingStatus)
+                {
+                    holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_recordingitemunpressedbg));
+                    holder.btnPlay.setShapeType(0);
+                    holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.recordingItemBgUnPressedColor));
+                    holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon);
+
+//                    stopPlayingRecording();
+                    checkRecordingStatus=false;
+                }
+                else
+                {
+//                    Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                    holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_item_bg));
+                    holder.btnPlay.setShapeType(2);
+                    holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.buttonPressedColor));
+                    holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
+
+//                    playRecording(filePath);
+
+                    checkRecordingStatus=true;
+                }
+
+
+
+            }
+        });
 
         holder.recordingName.setText(audioArrayList.get(position).getTitle());
         holder.dateAndTime.setText(audioArrayList.get(position).getDate());
@@ -146,7 +146,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
         NeumorphCardView btnPlay;
         NeumorphImageView neumorphImageView;
         RelativeLayout cardViewParentItem;
-        NeumorphTextView recordingName,dateAndTime,duration;
+        NeumorphTextView recordingName,dateAndTime,duration,recordingFormat;
 
 
 
@@ -160,6 +160,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             recordingName = itemView.findViewById(R.id.recordingName);
             dateAndTime = itemView.findViewById(R.id.time_and_date);
             duration = itemView.findViewById(R.id.duration);
+            recordingFormat = itemView.findViewById(R.id.recording_format);
 
 
         }

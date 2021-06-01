@@ -76,6 +76,16 @@
             android:layout_toRightOf="@+id/time_and_date"
             android:layout_marginLeft="18dp"
             android:textColor="@color/recordingTitle"/>
+        <soup.neumorphism.NeumorphTextView
+            android:id="@+id/recording_format"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Format"
+            android:textSize="10sp"
+            android:layout_below="@+id/recordingName"
+            android:layout_toRightOf="@+id/duration"
+            android:layout_marginLeft="18dp"
+            android:textColor="@color/recordingTitle"/>
 
 
     </RelativeLayout>
