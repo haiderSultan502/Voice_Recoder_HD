@@ -50,7 +50,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     LottieAnimationView lottieAnimationView;
 
-    public static int setOutputFormat  = 2;  //set default value
+//    public static int setOutputFormat  = 2;  //set default value
     public static String setOutputExt = "m4a";  //set default value
 
 
@@ -151,12 +151,14 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 //        Log.d("file Location", "startRecording: " + filePath);
 
 
+
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(setOutputFormat);  //M4A is wave_anim file extension for an audio file encoded with advanced audio coding (AAC) which is wave_anim lossy compression. M4A stands for MPEG 4 Audio.
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);  //M4A is wave_anim file extension for an audio file encoded with advanced audio coding (AAC) which is wave_anim lossy compression. M4A stands for MPEG 4 Audio.
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 //        Toast.makeText(getActivity(), "format " + setOutputFormat, Toast.LENGTH_SHORT).show();
         recorder.setOutputFile(filePath);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
 
         try {
             recorder.prepare();

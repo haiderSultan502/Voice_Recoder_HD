@@ -14,24 +14,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_track">
+        app:layout_constraintBottom_toTopOf="@id/elastic_lyout_btn_tracker">
 
     </FrameLayout>
 
 
+    <com.skydoves.elasticviews.ElasticLayout
+        android:id="@+id/elastic_lyout_btn_recorder"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/elastic_lyout_btn_tracker"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent">
 
     <soup.neumorphism.NeumorphCardView
         android:id="@+id/btn_recorder"
         android:layout_width="85dp"
         android:layout_height="85dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_track"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
         app:neumorph_backgroundColor="@color/buttonPressedColor"
         app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
         app:neumorph_shapeType="basin">
+
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -57,20 +63,32 @@
                 android:text="Recorder"
                 android:textColor="@color/clickedBtntext"
                 android:textSize="10sp" />
+
         </RelativeLayout>
+
+
 
     </soup.neumorphism.NeumorphCardView>
 
-    <soup.neumorphism.NeumorphCardView
-        android:id="@+id/btn_track"
+    </com.skydoves.elasticviews.ElasticLayout>
+
+    <com.skydoves.elasticviews.ElasticLayout
+        android:id="@+id/elastic_lyout_btn_tracker"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_setting"
+        app:layout_constraintEnd_toStartOf="@+id/elastic_lyout_btn_setting"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_recorder"
+        app:layout_constraintStart_toEndOf="@+id/elastic_lyout_btn_recorder">
+
+
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/btn_track"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         app:neumorph_backgroundColor="@color/buttonUnPressecColor"
         app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
         app:neumorph_shapeType="flat">
@@ -103,8 +121,11 @@
         </RelativeLayout>
     </soup.neumorphism.NeumorphCardView>
 
-    <soup.neumorphism.NeumorphCardView
-        android:id="@+id/btn_setting"
+    </com.skydoves.elasticviews.ElasticLayout>
+
+
+    <com.skydoves.elasticviews.ElasticLayout
+        android:id="@+id/elastic_lyout_btn_setting"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_alignParentRight="true"
@@ -112,7 +133,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_track"
+        app:layout_constraintStart_toEndOf="@+id/elastic_lyout_btn_tracker">
+
+    <soup.neumorphism.NeumorphCardView
+        android:id="@+id/btn_setting"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         app:neumorph_backgroundColor="@color/buttonUnPressecColor"
         app:neumorph_shapeAppearance="@style/CustomShapeAppearance"
         app:neumorph_shapeType="flat">
@@ -144,6 +170,8 @@
                 android:textSize="10sp" />
         </RelativeLayout>
     </soup.neumorphism.NeumorphCardView>
+
+    </com.skydoves.elasticviews.ElasticLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

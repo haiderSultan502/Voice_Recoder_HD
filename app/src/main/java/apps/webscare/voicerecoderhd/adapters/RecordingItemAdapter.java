@@ -71,7 +71,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
                 Uri filePath = audioArrayList.get(position).getUri();
 
 
-//                onItemClickListener.onItemClick(position,v);
+                onItemClickListener.onItemClick(position,v);
                 if (checkRecordingStatus)
                 {
                     holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_recordingitemunpressedbg));
@@ -161,8 +161,6 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             dateAndTime = itemView.findViewById(R.id.time_and_date);
             duration = itemView.findViewById(R.id.duration);
             recordingFormat = itemView.findViewById(R.id.recording_format);
-
-
         }
 
     }

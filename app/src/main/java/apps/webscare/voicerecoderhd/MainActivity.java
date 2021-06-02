@@ -21,6 +21,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.skydoves.elasticviews.ElasticLayout;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NeumorphImageView neumorphImageView;
     NeumorphTextView neumorphTextView;
     int btnBgColor,btnTxtColor;
+    ElasticLayout elasticLayoutBtnRecorder,elasticLayoutBtnTracker,elasticLayoutBtnSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +62,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void viewBndings() {
 
-        neumorphRecorderCardView = findViewById(R.id.btn_recorder);
-        neumorphTrackCardView = findViewById(R.id.btn_track);
-        neumorphSettingCardView = findViewById(R.id.btn_setting);
+//        neumorphRecorderCardView = findViewById(R.id.btn_recorder);
+//        neumorphTrackCardView = findViewById(R.id.btn_track);
+//        neumorphSettingCardView = findViewById(R.id.btn_setting);
+        elasticLayoutBtnRecorder = findViewById(R.id.elastic_lyout_btn_recorder);
+        elasticLayoutBtnTracker = findViewById(R.id.elastic_lyout_btn_tracker);
+        elasticLayoutBtnSetting = findViewById(R.id.elastic_lyout_btn_setting);
 
-        neumorphRecorderCardView.setOnClickListener(this);
-        neumorphTrackCardView.setOnClickListener(this);
-        neumorphSettingCardView.setOnClickListener(this);
+//        neumorphRecorderCardView.setOnClickListener(this);
+//        neumorphTrackCardView.setOnClickListener(this);
+//        neumorphSettingCardView.setOnClickListener(this);
+        elasticLayoutBtnRecorder.setOnClickListener(this);
+        elasticLayoutBtnTracker.setOnClickListener(this);
+        elasticLayoutBtnSetting.setOnClickListener(this);
     }
 
     private void replaceFragmnet(Fragment fragment) {
@@ -81,19 +89,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
 
-            case R.id.btn_recorder:
+            case R.id.elastic_lyout_btn_recorder:
                 setBtn(0,"ON");
                 setBtn(3,"OFF");
                 setBtn(6,"OFF");
                 replaceFragmnet(new RecorderFragment());
                 break;
-            case R.id.btn_track:
+            case R.id.elastic_lyout_btn_tracker:
                 setBtn(3,"ON");
                 setBtn(0,"OFF");
                 setBtn(6,"OFF");
                 replaceFragmnet(new TrackFragment());
                 break;
-            case R.id.btn_setting:
+            case R.id.elastic_lyout_btn_setting:
                 setBtn(6,"ON");
                 setBtn(0,"OFF");
                 setBtn(3,"OFF");

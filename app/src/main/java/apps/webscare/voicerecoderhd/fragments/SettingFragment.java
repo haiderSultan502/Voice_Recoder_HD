@@ -20,7 +20,7 @@ public class SettingFragment extends Fragment implements AdapterView.OnItemSelec
     View view;
     Spinner spinnerRecordingFormat,rateSpinner,encoderBitRateSpinner;
 
-    String[] recordingFoormat={"3gp","m4a"};
+    String[] recordingFoormat={"mp3","m4a","wav"};
 
     @Nullable
     @Override
@@ -61,13 +61,14 @@ public class SettingFragment extends Fragment implements AdapterView.OnItemSelec
         switch (recordingFormat)
         {
 
-            case "3gp":
-                RecorderFragment.setOutputFormat = 1;
-                RecorderFragment.setOutputExt = "3gp";
+            case "mp3":
+                RecorderFragment.setOutputExt = "mp3";
                 break;
-            case "M4a":
-                RecorderFragment.setOutputFormat = 2;
+            case "m4a":
                 RecorderFragment.setOutputExt = "m4a";
+                break;
+            case "wav":
+                RecorderFragment.setOutputExt = "wav";
                 break;
         }
 

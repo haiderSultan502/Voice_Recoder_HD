@@ -46,4 +46,8 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
 
+    //elastic view click animation  // https://github.com/skydoves/ElasticViews
+    implementation "com.github.skydoves:elasticviews:2.1.0"
+
+
 }
