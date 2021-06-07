@@ -2,6 +2,8 @@ package apps.webscare.voicerecoderhd.fragments;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -52,6 +54,9 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
 //    public static int setOutputFormat  = 2;  //set default value
     public static String setOutputExt = "m4a";  //set default value
+    public static int setSampleRate = 8000;
+
+    SharedPreferences sharedPreferences;
 
 
 
@@ -62,11 +67,17 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         view =inflater.inflate(R.layout.recorder_fragment,container,false);
 
+        initialization();
         viewBinds();
 
         return view;
     }
 
+    private void initialization() {
+        sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
+        setSampleRate = sharedPreferences.getInt("recordingFormat",8000);
+
+    }
 
 
     private void viewBinds() {
@@ -156,6 +167,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);  //M4A is wave_anim file extension for an audio file encoded with advanced audio coding (AAC) which is wave_anim lossy compression. M4A stands for MPEG 4 Audio.
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        recorder.setAudioSamplingRate(setSampleRate);
+        Toast.makeText(getActivity(), "sample rate " + setSampleRate, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getActivity(), "format " + setOutputFormat, Toast.LENGTH_SHORT).show();
         recorder.setOutputFile(filePath);
 
