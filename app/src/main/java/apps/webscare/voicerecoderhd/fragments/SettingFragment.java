@@ -24,21 +24,107 @@ public class SettingFragment extends Fragment {
     View view;
     Spinner spinnerRecordingFormat,sampleRateSpinner,encoderBitRateSpinner;
 
-    String[] recordingFoormat={"Select Format","mp3","m4a","wav"};
-    String[] sampleRate = {"Select Rate","8kHz","16kHz"};
+    String[] recordingFoormat={"Recording Format","mp3","m4a","wav"};
+    String[] sampleRate = {"Sample Rate","8kHz","16kHz"};
+    String[] encodingBitRates = {"Encoding BitRate","48kHz","96kHz","128kHz"};
     SharedPreferences sharedPreferences;
+    String sampleRateVal,recordingFormatVal,encodingBitRatevalue;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        initialization();
+
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =inflater.inflate(R.layout.setting_fragment,container,false);
 
-        initialization();
         bindViews();
         setSpinnerData(spinnerRecordingFormat,recordingFoormat);
         setSpinnerData(sampleRateSpinner,sampleRate);
-        setSpinnerData(encoderBitRateSpinner,recordingFoormat);
+        setSpinnerData(encoderBitRateSpinner,encodingBitRates);
+        viewClickListener();
+
+
+
+
+
         return view;
+    }
+
+    private void viewClickListener() {
+
+        spinnerRecordingFormat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String recordingFormatStr = recordingFoormat[position];
+                if (recordingFormatStr.equals("Recording Format")){
+                    Toast.makeText(getActivity(), "Please Select Format", Toast.LENGTH_SHORT).show();
+                }else {
+                    sharedPreferences.edit().putString("recordingFormat",recordingFormatStr).commit();
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        sampleRateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String sampleRateStr = sampleRate[position];
+
+                switch (sampleRateStr)
+                {
+                    case "8kHz":
+                        sharedPreferences.edit().putInt("sampleRate",8000).commit();
+                        break;
+                    case "16kHz":
+                        sharedPreferences.edit().putInt("sampleRate",16000).commit();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        encoderBitRateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String encodingBitRate = encodingBitRates[position];
+
+                switch (encodingBitRate)
+                {
+                    case "48kHz":
+                        sharedPreferences.edit().putInt("encodingBitRate",48000).commit();
+                        break;
+                    case "96kHz":
+                        sharedPreferences.edit().putInt("encodingBitRate",96000).commit();
+                        break;
+                    case "128kHz":
+                        sharedPreferences.edit().putInt("encodingBitRate",128000).commit();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     private void initialization() {
@@ -46,12 +132,57 @@ public class SettingFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
 
     }
-
     private void setSpinnerData(Spinner spinner,String[] spinnerArray) {
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(),R.layout.spinner_item,spinnerArray);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
+
+
+        recordingFormatVal = sharedPreferences.getString("recordingFormat","m4a");
+
+        switch (recordingFormatVal){
+            case "m4a":
+                spinnerRecordingFormat.setSelection(2);
+                break;
+            case "mp3":
+                spinnerRecordingFormat.setSelection(1);
+                break;
+            case "wav":
+                spinnerRecordingFormat.setSelection(3);
+                break;
+        }
+
+
+
+        sampleRateVal = String.valueOf(sharedPreferences.getInt("sampleRate",8000));
+        switch (sampleRateVal){
+            case "8000":
+            sampleRateSpinner.setSelection(1);
+            break;
+            case "16000":
+                sampleRateSpinner.setSelection(2);
+                break;
+        }
+
+
+        encodingBitRatevalue = String.valueOf(sharedPreferences.getInt("encodingBitRate",48000));
+        switch (encodingBitRatevalue){
+            case "48000":
+                encoderBitRateSpinner.setSelection(1);
+                break;
+            case "96000":
+                encoderBitRateSpinner.setSelection(2);
+                break;
+            case "128000":
+                encoderBitRateSpinner.setSelection(3);
+                break;
+        }
+
+
+
+
+
 
     }
 
@@ -60,60 +191,6 @@ public class SettingFragment extends Fragment {
         spinnerRecordingFormat = view.findViewById(R.id.recording_format_spinner);
         sampleRateSpinner = view.findViewById(R.id.rate_spinner);
         encoderBitRateSpinner = view.findViewById(R.id.encoder_bit_rate_spinner);
-
-        spinnerRecordingFormat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                    String recordingFormat = recordingFoormat[position];
-
-                    switch (recordingFormat)
-                    {
-
-                        case "mp3":
-                            RecorderFragment.setOutputExt = "mp3";
-                            break;
-                        case "m4a":
-                            RecorderFragment.setOutputExt = "m4a";
-                            break;
-                        case "wav":
-                            RecorderFragment.setOutputExt = "wav";
-                            break;
-
-                    }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        sampleRateSpinner.setSelection(2);
-        sampleRateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                    String sampleRateStr = sampleRate[position];
-
-                    switch (sampleRateStr)
-                    {
-                        case "8kHz":
-                            sharedPreferences.edit().putInt("recordingFormat",8000).commit();
-                            break;
-                        case "16kHz":
-                            sharedPreferences.edit().putInt("recordingFormat",16000).commit();
-                            break;
-                    }
-                }
-//            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-//        encoderBitRateSpinner.setOnItemSelectedListener(this);
 
     }
 }

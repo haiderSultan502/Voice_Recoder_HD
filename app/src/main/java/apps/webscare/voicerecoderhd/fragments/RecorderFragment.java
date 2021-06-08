@@ -52,9 +52,9 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     LottieAnimationView lottieAnimationView;
 
-//    public static int setOutputFormat  = 2;  //set default value
-    public static String setOutputExt = "m4a";  //set default value
-    public static int setSampleRate = 8000;
+    public static int setSampleRate = 8000; // set as default
+    public static String setRecordingFormat = "m4a";  // set as default
+    public static int setEncodingBitRate = 48000;
 
     SharedPreferences sharedPreferences;
 
@@ -74,9 +74,11 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initialization() {
-        sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
-        setSampleRate = sharedPreferences.getInt("recordingFormat",8000);
 
+        sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
+        setSampleRate = sharedPreferences.getInt("sampleRate",8000);
+        setRecordingFormat = sharedPreferences.getString("recordingFormat","m4a");
+        setEncodingBitRate = sharedPreferences.getInt("encodingBitRate",48000);
     }
 
 
@@ -168,7 +170,9 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);  //M4A is wave_anim file extension for an audio file encoded with advanced audio coding (AAC) which is wave_anim lossy compression. M4A stands for MPEG 4 Audio.
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         recorder.setAudioSamplingRate(setSampleRate);
+        recorder.setAudioEncodingBitRate(setEncodingBitRate);
         Toast.makeText(getActivity(), "sample rate " + setSampleRate, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "encoding bitRate " + setEncodingBitRate, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getActivity(), "format " + setOutputFormat, Toast.LENGTH_SHORT).show();
         recorder.setOutputFile(filePath);
 
@@ -230,7 +234,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         String date = dateFormat.format(new Date());
         audioFile = "REC" +  date;
 
-        filePath = myDirectory.getAbsolutePath() + File.separator + audioFile + "."+ setOutputExt;
+        filePath = myDirectory.getAbsolutePath() + File.separator + audioFile + "."+ setRecordingFormat;
 
     }
 
