@@ -50,12 +50,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Util.requestMultplePermission(this);
 
         viewBndings();
 
         replaceFragmnet(new RecorderFragment());
 
-        Util.requestMultplePermission(this);
+
 
 
     }

@@ -33,10 +33,10 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
 
     View view;
     MainActivity context;
-    Boolean checkRecordingStatus= false;
     ArrayList<ModelRecordings> audioArrayList;
     MediaPlayer player;
     OnItemClickListener onItemClickListener;
+    int row_index = -1 ;
 
 
     public RecordingItemAdapter(Context context,ArrayList<ModelRecordings> audioArrayList){
@@ -57,48 +57,30 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
     @Override
     public void onBindViewHolder(@NonNull final RecordingItemAdapter.ItemViewHolder holder, final int position) {
 
-//        holder.cardViewParentItem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onItemClickListener.onItemClick(position,v);
-//            }
-//        });
         holder.cardViewParentItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                Uri filePath = audioArrayList.get(position).getUri();
-
-
+                row_index = position;
+                notifyDataSetChanged();  //Notifies the attached observers that the underlying data has been changed and any View reflecting the data set should refresh itself.
                 onItemClickListener.onItemClick(position,v);
-                if (checkRecordingStatus)
-                {
-                    holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_recordingitemunpressedbg));
-                    holder.btnPlay.setShapeType(0);
-                    holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.recordingItemBgUnPressedColor));
-                    holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon);
-
-//                    stopPlayingRecording();
-                    checkRecordingStatus=false;
-                }
-                else
-                {
-//                    Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-                    holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_item_bg));
-                    holder.btnPlay.setShapeType(2);
-                    holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.buttonPressedColor));
-                    holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
-
-//                    playRecording(filePath);
-
-                    checkRecordingStatus=true;
-                }
-
-
-
             }
         });
+
+        if (row_index == position){
+
+            holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_item_bg));
+            holder.btnPlay.setShapeType(2);
+            holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.buttonPressedColor));
+            holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
+
+        } else {
+
+            holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_recordingitemunpressedbg));
+            holder.btnPlay.setShapeType(0);
+            holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.recordingItemBgUnPressedColor));
+            holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon);
+        }
 
         holder.recordingName.setText(audioArrayList.get(position).getTitle());
         holder.dateAndTime.setText(audioArrayList.get(position).getDate());

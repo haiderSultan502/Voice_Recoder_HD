@@ -1,19 +1,13 @@
 package apps.webscare.voicerecoderhd.fragments;
 
-import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.audiofx.Visualizer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,16 +20,14 @@ import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import org.firezenk.audiowaves.Visualizer;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
-import apps.webscare.voicerecoderhd.MainActivity;
 import apps.webscare.voicerecoderhd.R;
-import apps.webscare.voicerecoderhd.models.ModelRecordings;
 import soup.neumorphism.NeumorphFloatingActionButton;
 
 public class RecorderFragment extends Fragment implements View.OnClickListener {
@@ -49,14 +41,16 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     TextView timeCount;
     CountDownTimer countDownTimer;
     int second = -1,minute,hour;
+//    Visualizer visualizer;
 
-    LottieAnimationView lottieAnimationView;
+//    LottieAnimationView lottieAnimationView;
 
     public static int setSampleRate = 8000; // set as default
     public static String setRecordingFormat = "m4a";  // set as default
     public static int setEncodingBitRate = 48000;
 
     SharedPreferences sharedPreferences;
+
 
 
 
@@ -86,7 +80,9 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         btnStartRecording = view.findViewById(R.id.btn_record);
         timeCount = view.findViewById(R.id.time_count);
-        lottieAnimationView = view.findViewById(R.id.audio_wave);
+//        visualizer = view.findViewById(R.id.visulizer);
+//        lottieAnimationView = view.findViewById(R.id.audio_wave);
+
 
         btnStartRecording.setOnClickListener(this);
 
@@ -100,14 +96,14 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_record:
                 if (recordingStartStatus == false){
                     Toast.makeText(getActivity(), "Recording Start", Toast.LENGTH_SHORT).show();
-                    lottieAnimationView.playAnimation();
+//                    lottieAnimationView.playAnimation();
                     btnStartRecording.setShapeType(2);
                     startRecording();
                     recordingStartStatus = true;
                 }
                 else {
                     Toast.makeText(getActivity(), "Recording End", Toast.LENGTH_SHORT).show();
-                    lottieAnimationView.pauseAnimation();
+//                    lottieAnimationView.pauseAnimation();
                     btnStartRecording.setShapeType(0);
                     stopRecording();
                     recordingStartStatus = false;
@@ -120,6 +116,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
 
     private void stopRecording() {
+
+//        visualizer.stopListening();
 
         //cancel the count down timer
         countDownTimer.cancel();
@@ -164,6 +162,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 //        Log.d("file Location", "startRecording: " + filePath);
 
 
+//        visualizer.startListening();
 
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);

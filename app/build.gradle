@@ -49,5 +49,13 @@ dependencies {
     //elastic view click animation  // https://github.com/skydoves/ElasticViews
     implementation "com.github.skydoves:elasticviews:2.1.0"
 
+//    // Media Playback audio visualizer
+//    implementation 'com.chibde:audiovisualizer:2.1.0'
+//    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+//    implementation 'com.google.android.material:material:1.0.0'
+
+    //Audio Waves
+    implementation 'org.firezenk:audiowaves:1.1@aar'
+
 
 }
