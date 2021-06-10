@@ -290,17 +290,15 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
 
 
-//            case R.id.recording_play_btn:
-//                if (recordingPlayStatus == false){
-//                    Toast.makeText(getActivity(), "Recording Play", Toast.LENGTH_SHORT).show();
-//                    playRecording();
-//                    recordingPlayStatus = true;
-//                }
-//                else {
-//                    Toast.makeText(getActivity(), "Recording Stop Playing", Toast.LENGTH_SHORT).show();
-//                    stopPlayingRecording();
-//                    recordingPlayStatus = false;
-//                }
+            case R.id.recording_play_btn:
+
+                player.stop();
+
+                btnPlayRecording.setImageResource(R.drawable.ic_pause_recording);
+
+
+
+
 
         }
     }

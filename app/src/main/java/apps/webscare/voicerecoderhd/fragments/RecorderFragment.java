@@ -1,5 +1,7 @@
 package apps.webscare.voicerecoderhd.fragments;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import org.firezenk.audiowaves.Visualizer;
 
@@ -26,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import apps.webscare.voicerecoderhd.R;
 import soup.neumorphism.NeumorphFloatingActionButton;
@@ -51,22 +60,25 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     SharedPreferences sharedPreferences;
 
-
-
-
-
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+//        requestMultplePermission(getActivity());
+
 
         view =inflater.inflate(R.layout.recorder_fragment,container,false);
 
-        initialization();
+//        visualizer = view.findViewById(R.id.visulizer);
+
+
+
         viewBinds();
+        initialization();
+
 
         return view;
     }
-
     private void initialization() {
 
         sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
@@ -80,7 +92,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         btnStartRecording = view.findViewById(R.id.btn_record);
         timeCount = view.findViewById(R.id.time_count);
-//        visualizer = view.findViewById(R.id.visulizer);
+
 //        lottieAnimationView = view.findViewById(R.id.audio_wave);
 
 
@@ -94,6 +106,10 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         switch (id)
         {
             case R.id.btn_record:
+
+
+
+
                 if (recordingStartStatus == false){
                     Toast.makeText(getActivity(), "Recording Start", Toast.LENGTH_SHORT).show();
 //                    lottieAnimationView.playAnimation();
@@ -117,6 +133,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     private void stopRecording() {
 
+        btnStartRecording.setImageResource(R.drawable.mic);
 //        visualizer.stopListening();
 
         //cancel the count down timer
@@ -155,6 +172,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         createFolderToStoreRecording();
 
+        btnStartRecording.setImageResource(R.drawable.ic_pause_floating_btn);
+
 
 //        String uuid = UUID.randomUUID().toString();  //A class that represents an immutable universally unique identifier (UUID)
 ////        filePath = getActivity().getExternalCacheDir().getAbsolutePath() + "/" + uuid + ".3gp";
@@ -183,7 +202,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         }
 
         recorder.start();
-        
+
         showTimer();
 
 

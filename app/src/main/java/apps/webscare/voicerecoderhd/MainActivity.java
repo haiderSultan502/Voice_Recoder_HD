@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -45,16 +47,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int btnBgColor,btnTxtColor;
     ElasticLayout elasticLayoutBtnRecorder,elasticLayoutBtnTracker,elasticLayoutBtnSetting;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        Util.requestMultplePermission(this);
 
-        viewBndings();
+//        Util.requestMultplePermission(this);
 
-        replaceFragmnet(new RecorderFragment());
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        if (multiplePermissionsReport.areAllPermissionsGranted())
+                        {
+                            Log.d("permission  granted", "onPermissionsChecked: permission  granted successfully" );
+
+                            setContentView(R.layout.activity_main);
+                            elasticLayoutBtnRecorder = findViewById(R.id.elastic_lyout_btn_recorder);
+                            elasticLayoutBtnTracker = findViewById(R.id.elastic_lyout_btn_tracker);
+                            elasticLayoutBtnSetting = findViewById(R.id.elastic_lyout_btn_setting);
+//                            visualizer = view.findViewById(R.id.visulizer);
+//                            visualizer.startListening();
+                            elasticLayoutBtnRecorder.setOnClickListener(MainActivity.this);
+                            elasticLayoutBtnTracker.setOnClickListener(MainActivity.this);
+                            elasticLayoutBtnSetting.setOnClickListener(MainActivity.this);
+
+                            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frameLayout,new RecorderFragment());
+                            fragmentTransaction.commitAllowingStateLoss();
+                        }
+                        if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()){
+                            Log.d("permission  Denied", "onPermissionsChecked: permission  denied " );
+//                            activity.finish();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
+
+
+
+//        viewBndings();
+
+//        replaceFragmnet(new RecorderFragment());
 
 
 
@@ -66,16 +110,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        neumorphRecorderCardView = findViewById(R.id.btn_recorder);
 //        neumorphTrackCardView = findViewById(R.id.btn_track);
 //        neumorphSettingCardView = findViewById(R.id.btn_setting);
-        elasticLayoutBtnRecorder = findViewById(R.id.elastic_lyout_btn_recorder);
-        elasticLayoutBtnTracker = findViewById(R.id.elastic_lyout_btn_tracker);
-        elasticLayoutBtnSetting = findViewById(R.id.elastic_lyout_btn_setting);
+//        elasticLayoutBtnRecorder = findViewById(R.id.elastic_lyout_btn_recorder);
+//        elasticLayoutBtnTracker = findViewById(R.id.elastic_lyout_btn_tracker);
+//        elasticLayoutBtnSetting = findViewById(R.id.elastic_lyout_btn_setting);
 
 //        neumorphRecorderCardView.setOnClickListener(this);
 //        neumorphTrackCardView.setOnClickListener(this);
 //        neumorphSettingCardView.setOnClickListener(this);
-        elasticLayoutBtnRecorder.setOnClickListener(this);
-        elasticLayoutBtnTracker.setOnClickListener(this);
-        elasticLayoutBtnSetting.setOnClickListener(this);
+//        elasticLayoutBtnRecorder.setOnClickListener(this);
+//        elasticLayoutBtnTracker.setOnClickListener(this);
+//        elasticLayoutBtnSetting.setOnClickListener(this);
     }
 
     private void replaceFragmnet(Fragment fragment) {
