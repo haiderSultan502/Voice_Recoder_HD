@@ -38,7 +38,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
     View view,views;
     RecyclerView rvRecordings;
-    ImageView btnPlayRecording,nextRecording,previousRecording;
+    ImageView btnPlayRecording,btnStoprecording,nextRecording,previousRecording;
     SeekBar seekBar;
     int currentPosition,totalDuration;
     TextView current,total;
@@ -48,6 +48,8 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
     ArrayList<ModelRecordings> audioArrayList;
     int audio_index = 0;
+
+    private boolean isRecordingPlay =  false;
 
     @Nullable
     @Override
@@ -145,6 +147,14 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
     private void playRecording(int pos) {
 
+        isRecordingPlay = true;
+
+        btnStoprecording.setVisibility(View.VISIBLE);
+        btnPlayRecording.setVisibility(View.GONE);
+
+
+//        btnPlayRecording.setImageResource(R.drawable.ic_pause_recording);
+
         player = new MediaPlayer();
         try {
             player.setDataSource(getActivity(),audioArrayList.get(pos).getUri());
@@ -212,12 +222,14 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         btnPlayRecording = view.findViewById(R.id.recording_play_btn);
         nextRecording = view.findViewById(R.id.next_recording);
         previousRecording = view.findViewById(R.id.previous_recording);
+        btnStoprecording = view.findViewById(R.id.recording_stop_btn);
         current = view.findViewById(R.id.current);
         total = view.findViewById(R.id.total);
 
         btnPlayRecording.setOnClickListener(this);
         nextRecording.setOnClickListener(this);
         previousRecording.setOnClickListener(this);
+        btnStoprecording.setOnClickListener(this);
         setRecyclerView();
     }
 
@@ -292,9 +304,28 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
             case R.id.recording_play_btn:
 
-                player.stop();
+                if (isRecordingPlay==false) {
+                    player.start();
 
-                btnPlayRecording.setImageResource(R.drawable.ic_pause_recording);
+                btnPlayRecording.setVisibility(View.GONE);
+                btnStoprecording.setVisibility(View.VISIBLE);
+                    isRecordingPlay = true;
+                }
+
+                break;
+
+            case R.id.recording_stop_btn:
+
+                if (isRecordingPlay)
+                {
+                    player.pause();
+
+                    btnPlayRecording.setVisibility(View.VISIBLE);
+                    btnStoprecording.setVisibility(View.GONE);
+                    isRecordingPlay = false;
+                }
+
+
 
 
 

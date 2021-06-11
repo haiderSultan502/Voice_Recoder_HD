@@ -112,15 +112,24 @@
             android:layout_marginBottom="5dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_recordingbtnplay" />
+        <ImageView
+            android:id="@+id/recording_stop_btn"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:visibility="gone"
+            android:src="@drawable/ic_pause_recording" />
 
         <ImageView
             android:id="@+id/previous_recording"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
             android:layout_marginBottom="11dp"
-            android:layout_toLeftOf="@id/recording_play_btn"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_previousbtn" />
 
@@ -129,9 +138,9 @@
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
             android:layout_marginBottom="11dp"
-            android:layout_toRightOf="@id/recording_play_btn"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_forwardbtn" />
 

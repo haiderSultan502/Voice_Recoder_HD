@@ -9,6 +9,8 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +30,6 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import org.firezenk.audiowaves.Visualizer;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,7 @@ import java.util.Date;
 import java.util.List;
 
 import apps.webscare.voicerecoderhd.R;
+import apps.webscare.voicerecoderhd.VisualizerView;
 import soup.neumorphism.NeumorphFloatingActionButton;
 
 public class RecorderFragment extends Fragment implements View.OnClickListener {
@@ -50,15 +52,18 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     TextView timeCount;
     CountDownTimer countDownTimer;
     int second = -1,minute,hour;
-//    Visualizer visualizer;
-
-//    LottieAnimationView lottieAnimationView;
 
     public static int setSampleRate = 8000; // set as default
     public static String setRecordingFormat = "m4a";  // set as default
     public static int setEncodingBitRate = 48000;
 
     SharedPreferences sharedPreferences;
+
+    VisualizerView visualizerView;
+
+    Handler handler;
+    private boolean isRecording = false;
+    public static final int REPEAT_INTERVAL = 40;
 
     @Nullable
     @Override
@@ -79,12 +84,17 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         return view;
     }
+
+
     private void initialization() {
 
         sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
         setSampleRate = sharedPreferences.getInt("sampleRate",8000);
         setRecordingFormat = sharedPreferences.getString("recordingFormat","m4a");
         setEncodingBitRate = sharedPreferences.getInt("encodingBitRate",48000);
+
+        // create the Handler for visualizer update
+        handler = new Handler(Looper.getMainLooper());
     }
 
 
@@ -92,6 +102,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         btnStartRecording = view.findViewById(R.id.btn_record);
         timeCount = view.findViewById(R.id.time_count);
+        visualizerView = view.findViewById(R.id.visualizer);
 
 //        lottieAnimationView = view.findViewById(R.id.audio_wave);
 
@@ -106,9 +117,6 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         switch (id)
         {
             case R.id.btn_record:
-
-
-
 
                 if (recordingStartStatus == false){
                     Toast.makeText(getActivity(), "Recording Start", Toast.LENGTH_SHORT).show();
@@ -134,7 +142,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     private void stopRecording() {
 
         btnStartRecording.setImageResource(R.drawable.mic);
-//        visualizer.stopListening();
+        btnStartRecording.setShapeType(0);
 
         //cancel the count down timer
         countDownTimer.cancel();
@@ -146,6 +154,9 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         if (recorder != null)
         {
             recorder.release();
+            isRecording = false; // stop recording
+            handler.removeCallbacks(updateVisulizer);
+            visualizerView.clear();
             recorder = null;
         }
 
@@ -170,9 +181,11 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     private void startRecording() {
 
+
         createFolderToStoreRecording();
 
-        btnStartRecording.setImageResource(R.drawable.ic_pause_floating_btn);
+        btnStartRecording.setImageResource(R.drawable.ic_pause_btn3);
+        btnStartRecording.setShapeType(2);
 
 
 //        String uuid = UUID.randomUUID().toString();  //A class that represents an immutable universally unique identifier (UUID)
@@ -180,8 +193,6 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 //        filePath = Environment.getExternalStorageDirectory().getPath() + "/" + uuid + ".3gp";
 //        Log.d("file Location", "startRecording: " + filePath);
 
-
-//        visualizer.startListening();
 
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -202,6 +213,10 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         }
 
         recorder.start();
+
+        isRecording = true;
+
+        handler.post(updateVisulizer);
 
         showTimer();
 
@@ -255,6 +270,22 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         filePath = myDirectory.getAbsolutePath() + File.separator + audioFile + "."+ setRecordingFormat;
 
     }
+
+    Runnable updateVisulizer = new Runnable() {
+        @Override
+        public void run() {
+
+            if (isRecording)
+            {
+                // get the current amplitude
+                int x =recorder.getMaxAmplitude();
+                visualizerView.addAmplitude(x);  // update the VisualizeView
+                visualizerView.invalidate(); // refresh the VisualizerView
+
+                handler.postDelayed(this,REPEAT_INTERVAL);
+            }
+        }
+    };
 
 
 }
