@@ -12,6 +12,8 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,14 +45,17 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
     SeekBar seekBar;
     int currentPosition,totalDuration;
     TextView current,total;
+    ConstraintLayout constraintLayout;
 
     MediaPlayer player;
     Boolean recordingPlayStatus=false;
 
     ArrayList<ModelRecordings> audioArrayList;
     int audio_index = 0;
+    Animation animSlideUp;
 
     private boolean isRecordingPlay =  false;
+    RecordingItemAdapter recordingItemAdapter;
 
     @Nullable
     @Override
@@ -59,6 +65,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
         viewBindings();
         initialization();
+
         getAudioRecordings();
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -96,7 +103,8 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
             do {
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                String type = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE));
+                String recordingFormat = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE));
+
                 ModelRecordings modelRecordings = new ModelRecordings();
                 modelRecordings.setTitle(title);
                 File file = new File(data); //This constructor creates wave_anim new File instance by converting the given pathname string into an abstract pathname which helps to get the value when the file was last modified by calling file.lastModified()
@@ -114,10 +122,13 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
                 modelRecordings.setDuration(duration);
 
+                String fileFomat = recordingFormat;
+                modelRecordings.setFormat(fileFomat);
+
                 audioArrayList.add(modelRecordings);
             } while(cursor.moveToNext());
         }
-        RecordingItemAdapter recordingItemAdapter = new RecordingItemAdapter(getActivity(),audioArrayList);
+        recordingItemAdapter = new RecordingItemAdapter(getActivity(),audioArrayList);
         rvRecordings.setAdapter(recordingItemAdapter);
 
         recordingItemAdapter.setOnItemClickListener(new RecordingItemAdapter.OnItemClickListener() {
@@ -190,9 +201,15 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
                 seekBar.setProgress(currentPosition);
                 seekBar.setKeyProgressIncrement(1);
                 handler.postDelayed(this,1000);
+                int progress = seekBar.getProgress();
+                if (progress == totalDuration) {
+                    Toast.makeText(getActivity(), "Progress", Toast.LENGTH_SHORT).show();
+                }
             }
         };
         handler.postDelayed(runnable,1000);
+
+
 
 
 //        final Handler handler = new Handler();
@@ -212,11 +229,16 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
         audioArrayList = new ArrayList<>();
 
+        animSlideUp = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_up);
+        constraintLayout.startAnimation(animSlideUp);
+
         player = new MediaPlayer();
 
     }
 
     private void viewBindings() {
+
+        constraintLayout = view.findViewById(R.id.parentConstrainLayout);
         rvRecordings = view.findViewById(R.id.rv_recordings);
         seekBar = view.findViewById(R.id.recording_progress);
         btnPlayRecording = view.findViewById(R.id.recording_play_btn);
@@ -281,9 +303,14 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
                 if (audio_index == audioArrayList.size()-1){
                     audio_index = 0;
                     playRecording(audio_index);
+
                 }else {
                     audio_index++;
                     playRecording(audio_index);
+
+                    //these two lines work for making the next item selected in recycler view
+                    RecordingItemAdapter.row_index = audio_index;
+                    recordingItemAdapter.notifyDataSetChanged();  // without it next recording not show selected
                 }
                 break;
 
@@ -295,6 +322,10 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
                 }else {
                     audio_index--;
                     playRecording(audio_index);
+
+                    //these two lines work for making the previous item selected in recycler view
+                    RecordingItemAdapter.row_index = audio_index;
+                    recordingItemAdapter.notifyDataSetChanged();  // without it next recording not show selected
                 }
 
                 break;

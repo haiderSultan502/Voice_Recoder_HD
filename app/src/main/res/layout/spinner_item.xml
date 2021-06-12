@@ -5,6 +5,6 @@
     android:layout_height="wrap_content"
     android:textSize="13sp"
     android:paddingLeft="9dp"
-    android:textColor="@color/recordingTitle">
+    android:textColor="@color/lightTextColor">
 
 </TextView>

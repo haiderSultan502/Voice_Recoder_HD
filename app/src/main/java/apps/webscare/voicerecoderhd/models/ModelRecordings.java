@@ -6,6 +6,15 @@ public class ModelRecordings {
 
     String title;
     String date;
+    String format;
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
 
     public String getDuration() {
         return duration;

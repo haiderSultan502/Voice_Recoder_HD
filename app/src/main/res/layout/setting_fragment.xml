@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="Enabled"
                 android:textSize="13sp"
-                android:textColor="@color/recordingTitle"
+                android:textColor="@color/lightTextColor"
                 android:layout_marginLeft="20dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/txt_statusbar"/>
@@ -214,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:text="D:\Articles Pictures\Asif\Pending"
                 android:textSize="13sp"
-                android:textColor="@color/recordingTitle"
+                android:textColor="@color/lightTextColor"
                 android:layout_marginLeft="20dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/txt_recording_folder"/>
@@ -236,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:text="About Application"
                 android:textSize="13sp"
-                android:textColor="@color/recordingTitle"
+                android:textColor="@color/lightTextColor"
                 android:layout_marginLeft="20dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/txt_about"/>

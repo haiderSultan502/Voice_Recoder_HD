@@ -3,6 +3,7 @@ package apps.webscare.voicerecoderhd.adapters;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,9 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
     ArrayList<ModelRecordings> audioArrayList;
     MediaPlayer player;
     OnItemClickListener onItemClickListener;
-    int row_index = -1 ;
+    public static int row_index = -1 ;
+//    public static int rowIndex2 = -1;
+    public boolean playStatus = false;
 
 
     public RecordingItemAdapter(Context context,ArrayList<ModelRecordings> audioArrayList){
@@ -57,34 +60,42 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
     @Override
     public void onBindViewHolder(@NonNull final RecordingItemAdapter.ItemViewHolder holder, final int position) {
 
+        Log.d("notify", "onBindViewHolder: " + position);
         holder.cardViewParentItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+//                if (playStatus == false){
+//                    playStatus = true;
+//                }
                 row_index = position;
                 notifyDataSetChanged();  //Notifies the attached observers that the underlying data has been changed and any View reflecting the data set should refresh itself.
                 onItemClickListener.onItemClick(position,v);
+
+
             }
         });
 
         if (row_index == position){
 
+
             holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_item_bg));
             holder.btnPlay.setShapeType(2);
             holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.buttonPressedColor));
-            holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
+            holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon_color);
 
         } else {
 
             holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_recordingitemunpressedbg));
             holder.btnPlay.setShapeType(0);
             holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.recordingItemBgUnPressedColor));
-            holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon);
+            holder.neumorphImageView.setImageResource(R.drawable.ic_music);
         }
 
         holder.recordingName.setText(audioArrayList.get(position).getTitle());
         holder.dateAndTime.setText(audioArrayList.get(position).getDate());
         holder.duration.setText(audioArrayList.get(position).getDuration());
+        holder.recordingFormat.setText(audioArrayList.get(position).getFormat());
     }
 
     @Override

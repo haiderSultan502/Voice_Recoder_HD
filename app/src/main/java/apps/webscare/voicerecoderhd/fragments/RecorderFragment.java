@@ -63,7 +63,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     Handler handler;
     private boolean isRecording = false;
-    public static final int REPEAT_INTERVAL = 40;
+    public static final int REPEAT_INTERVAL = 30; // by default 40 value
 
     @Nullable
     @Override
@@ -141,6 +141,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     private void stopRecording() {
 
+        visualizerView.setVisibility(View.GONE);
+
         btnStartRecording.setImageResource(R.drawable.mic);
         btnStartRecording.setShapeType(0);
 
@@ -173,7 +175,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         ContentValues values = new ContentValues();
         values.put(MediaStore.Audio.Media.DATA,filePath);
-        values.put(MediaStore.Audio.Media.MIME_TYPE,"audio/mpeg4");
+        values.put(MediaStore.Audio.Media.MIME_TYPE,setRecordingFormat);
         values.put(MediaStore.Audio.Media.TITLE,audioFile);
         //store audio recorder file in the external content uri
         getActivity().getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,values);
@@ -181,6 +183,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     private void startRecording() {
 
+
+        visualizerView.setVisibility(View.VISIBLE);
 
         createFolderToStoreRecording();
 
