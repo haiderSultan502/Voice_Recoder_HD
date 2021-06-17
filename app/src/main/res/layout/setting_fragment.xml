@@ -87,6 +87,13 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="28dp"
                 android:button="@drawable/checkbox_background"/>
+            <LinearLayout
+                android:id="@+id/recording_format_click_listener"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/txt_enable"
+                android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/txt_recordingFormat"
@@ -95,27 +102,36 @@
                 android:text="Recording Format"
                 android:textSize="17sp"
                 android:textColor="@color/recordingTitle"
+                android:layout_marginLeft="20dp" />
+            <TextView
+                android:id="@+id/selected_recording_format"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mp4"
+                android:textSize="13sp"
+                android:textColor="@color/lightTextColor"
                 android:layout_marginLeft="20dp"
-                android:layout_below="@+id/txt_enable"
-                android:layout_marginTop="20dp"/>
+                android:layout_alignParentLeft="true"/>
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/recording_format_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="13dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/txt_recordingFormat"
-                android:layout_marginRight="20dp">
+            </LinearLayout>
 
-            </androidx.appcompat.widget.AppCompatSpinner>
+<!--            <androidx.appcompat.widget.AppCompatSpinner-->
+<!--                android:id="@+id/recording_format_spinner"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="13dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_below="@+id/txt_recordingFormat"-->
+<!--                android:layout_marginRight="20dp">-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_hr_line"
-                android:layout_below="@id/recording_format_spinner"
-                android:layout_marginTop="20dp"/>
+<!--            </androidx.appcompat.widget.AppCompatSpinner>-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_hr_line"-->
+<!--                android:layout_below="@id/recording_format_spinner"-->
+<!--                android:layout_marginTop="20dp"/>-->
 
 
 

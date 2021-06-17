@@ -24,4 +24,9 @@
         <item name="neumorph_cornerSize">8dp</item>
     </style>
 
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/clickedBtntext</item>
+        <item name="colorControlNormal">@color/unclickedBtntext</item>
+    </style>
+
 </resources>

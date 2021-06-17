@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recording format"
+        android:textColor="@color/clickedBtntext"
+        android:textSize="20dp"/>
+
+        <RadioGroup
+            android:id="@+id/recording_format_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:theme="@style/MyRadioButton">
+            <RadioButton
+                android:id="@+id/format_mp4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mp4"
+                android:textSize="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="8dp"
+                android:checked="true"/>
+            <RadioButton
+                android:id="@+id/format_mp3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mp3"
+                android:textSize="20dp"
+                android:paddingLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="8dp"
+                android:checked="false"/>
+            <RadioButton
+                android:id="@+id/format_wav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wav"
+                android:textSize="20dp"
+                android:paddingLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="8dp"
+                android:checked="false"/>
+
+        </RadioGroup>
+</LinearLayout>

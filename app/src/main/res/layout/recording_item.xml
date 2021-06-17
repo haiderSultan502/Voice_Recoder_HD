@@ -62,7 +62,7 @@
             android:text="Time and Data"
             android:textSize="10sp"
             android:layout_below="@+id/recordingName"
-            android:layout_toRightOf="@+id/btn_play"
+            android:layout_toRightOf="@+id/recording_format"
             android:layout_marginLeft="18dp"
             android:textColor="@color/recordingTitle"/>
 
@@ -73,7 +73,7 @@
             android:text="Duration"
             android:textSize="10sp"
             android:layout_below="@+id/recordingName"
-            android:layout_toRightOf="@+id/time_and_date"
+            android:layout_toRightOf="@+id/btn_play"
             android:layout_marginLeft="18dp"
             android:textColor="@color/recordingTitle"/>
         <soup.neumorphism.NeumorphTextView
