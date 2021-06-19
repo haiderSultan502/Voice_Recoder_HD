@@ -9,13 +9,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.karumi.dexter.Dexter;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NeumorphTextView neumorphTextView;
     int btnBgColor,btnTxtColor;
     ElasticLayout elasticLayoutBtnRecorder,elasticLayoutBtnTracker,elasticLayoutBtnSetting;
+    SharedPreferences sharedPreferences;
 
 
 
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void viewBndings() {
+
+
 
 //        neumorphRecorderCardView = findViewById(R.id.btn_recorder);
 //        neumorphTrackCardView = findViewById(R.id.btn_track);
