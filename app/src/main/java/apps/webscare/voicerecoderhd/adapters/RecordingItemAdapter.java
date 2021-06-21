@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import apps.webscare.voicerecoderhd.MainActivity;
 import apps.webscare.voicerecoderhd.R;
 import apps.webscare.voicerecoderhd.fragments.RecorderFragment;
+import apps.webscare.voicerecoderhd.fragments.TrackFragment;
 import apps.webscare.voicerecoderhd.models.ModelRecordings;
 import soup.neumorphism.NeumorphCardView;
 import soup.neumorphism.NeumorphImageView;
@@ -40,12 +41,18 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
     public static int row_index = -1 ;
 //    public static int rowIndex2 = -1;
     public boolean playStatus = false;
+    int previousItemPosition,newItemPosition;
+    TrackFragment trackFragment;
+    boolean sameRecordingPlayPauseStatus = false;
+    public static boolean nextPreviousFromBtn = false;
+    public static boolean btnPlayStatus,btnStopStatus;
 
 
     public RecordingItemAdapter(Context context,ArrayList<ModelRecordings> audioArrayList){
         this.context = (MainActivity) context;
         this.audioArrayList = audioArrayList;
         player = new MediaPlayer();
+        trackFragment = new TrackFragment();
     }
 
     @NonNull
@@ -65,12 +72,50 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             @Override
             public void onClick(View v) {
 
-//                if (playStatus == false){
-//                    playStatus = true;
-//                }
-                row_index = position;
-                notifyDataSetChanged();  //Notifies the attached observers that the underlying data has been changed and any View reflecting the data set should refresh itself.
-                onItemClickListener.onItemClick(position,v);
+
+                if (playStatus==false){
+
+                    previousItemPosition = position;
+
+                    row_index = position;
+                    notifyDataSetChanged();  //Notifies the attached observers that the underlying data has been changed and any View reflecting the data set should refresh itself.
+                    onItemClickListener.onItemClick(position,v);
+                    playStatus = true;
+
+                } else {
+                    newItemPosition = position;
+                    if (previousItemPosition == newItemPosition )
+                    {
+
+                        Log.d("TAG", "onClick: " + sameRecordingPlayPauseStatus);
+
+                        if (sameRecordingPlayPauseStatus == false){
+                            holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
+                            trackFragment.stop();
+                            sameRecordingPlayPauseStatus = true;
+                        }else {
+                            holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon_color);
+                            trackFragment.play();
+                            sameRecordingPlayPauseStatus = false;
+                        }
+
+
+                    }
+                    else {
+
+
+                        previousItemPosition = position;
+
+                        row_index = position;
+                        notifyDataSetChanged();  //Notifies the attached observers that the underlying data has been changed and any View reflecting the data set should refresh itself.
+                        onItemClickListener.onItemClick(position,v);
+
+                        sameRecordingPlayPauseStatus = false;
+
+//                        playStatus = false;
+                    }
+
+                }
 
 
             }
@@ -78,11 +123,31 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
 
         if (row_index == position){
 
+            if (nextPreviousFromBtn == true){
+                nextPreviousFromBtn = false;
+
+                playStatus = true;
+                previousItemPosition = position;
+
+                sameRecordingPlayPauseStatus = false;
+            }
+
+
 
             holder.cardViewParentItem.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_item_bg));
             holder.btnPlay.setShapeType(2);
             holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.buttonPressedColor));
             holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon_color);
+
+            if (btnPlayStatus == true){
+                holder.neumorphImageView.setImageResource(R.drawable.ic_pause_icon_color);
+                btnPlayStatus = false;
+            }
+            if (btnStopStatus == true){
+                holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
+                btnStopStatus = false;
+            }
+
 
         } else {
 

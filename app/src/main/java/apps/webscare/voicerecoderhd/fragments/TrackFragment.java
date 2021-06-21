@@ -41,21 +41,21 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
     View view,views;
     RecyclerView rvRecordings;
-    ImageView btnPlayRecording,btnStoprecording,nextRecording,previousRecording;
+    static ImageView btnPlayRecording,btnStoprecording,nextRecording,previousRecording;
     SeekBar seekBar;
     int currentPosition,totalDuration;
     TextView current,total;
     ConstraintLayout constraintLayout;
 
-    MediaPlayer player;
+    public static  MediaPlayer player;
     Boolean recordingPlayStatus=false;
 
     ArrayList<ModelRecordings> audioArrayList;
     int audio_index = 0;
     Animation animSlideUp;
 
-    private boolean isRecordingPlay =  false;
-    RecordingItemAdapter recordingItemAdapter;
+    private static boolean isRecordingPlay =  false;
+    static RecordingItemAdapter recordingItemAdapter;
 
     @Nullable
     @Override
@@ -158,6 +158,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
     private void playRecording(int pos) {
 
+        player.reset();
         isRecordingPlay = true;
 
         btnStoprecording.setVisibility(View.VISIBLE);
@@ -201,10 +202,10 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
                 seekBar.setProgress(currentPosition);
                 seekBar.setKeyProgressIncrement(1);
                 handler.postDelayed(this,1000);
-                int progress = seekBar.getProgress();
-                if (progress == totalDuration) {
-                    Toast.makeText(getActivity(), "Progress", Toast.LENGTH_SHORT).show();
-                }
+//                int progress = seekBar.getProgress();
+//                if (progress == totalDuration) {
+////                    Toast.makeText(getActivity(), "Progress", Toast.LENGTH_SHORT).show();
+//                }
             }
         };
         handler.postDelayed(runnable,1000);
@@ -300,32 +301,36 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
             case R.id.next_recording:
 
+                player.reset();
+
                 if (audio_index == audioArrayList.size()-1){
                     audio_index = 0;
                     playRecording(audio_index);
+
+                    updateDataAdapterItem();
 
                 }else {
                     audio_index++;
                     playRecording(audio_index);
 
-                    //these two lines work for making the next item selected in recycler view
-                    RecordingItemAdapter.row_index = audio_index;
-                    recordingItemAdapter.notifyDataSetChanged();  // without it next recording not show selected
+                    updateDataAdapterItem();
                 }
                 break;
 
             case R.id.previous_recording:
 
+                player.reset();
+
                 if (audio_index == 0){
                     audio_index = audioArrayList.size()-1;
                     playRecording(audio_index);
+
+                    updateDataAdapterItem();
                 }else {
                     audio_index--;
                     playRecording(audio_index);
 
-                    //these two lines work for making the previous item selected in recycler view
-                    RecordingItemAdapter.row_index = audio_index;
-                    recordingItemAdapter.notifyDataSetChanged();  // without it next recording not show selected
+                    updateDataAdapterItem();
                 }
 
                 break;
@@ -335,33 +340,80 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
             case R.id.recording_play_btn:
 
-                if (isRecordingPlay==false) {
-                    player.start();
+                playRecordingCall();
 
-                btnPlayRecording.setVisibility(View.GONE);
-                btnStoprecording.setVisibility(View.VISIBLE);
-                    isRecordingPlay = true;
-                }
+
 
                 break;
 
             case R.id.recording_stop_btn:
 
-                if (isRecordingPlay)
-                {
-                    player.pause();
-
-                    btnPlayRecording.setVisibility(View.VISIBLE);
-                    btnStoprecording.setVisibility(View.GONE);
-                    isRecordingPlay = false;
-                }
-
-
-
-
-
+                stopRecordingCall();
 
 
         }
     }
+
+    public void stopRecordingCall() {
+
+        if (isRecordingPlay)
+        {
+            player.pause();
+
+            btnPlayRecording.setVisibility(View.VISIBLE);
+            btnStoprecording.setVisibility(View.GONE);
+            isRecordingPlay = false;
+
+            RecordingItemAdapter.btnStopStatus =true;
+            recordingItemAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    public void playRecordingCall() {
+
+        if (isRecordingPlay==false) {
+            player.start();
+
+            btnPlayRecording.setVisibility(View.GONE);
+            btnStoprecording.setVisibility(View.VISIBLE);
+            isRecordingPlay = true;
+
+            RecordingItemAdapter.btnPlayStatus =true;
+            recordingItemAdapter.notifyDataSetChanged();
+        }
+
+
+
+    }
+
+    public void play(){
+
+        if (isRecordingPlay==false) {
+            player.start();
+
+            btnPlayRecording.setVisibility(View.GONE);
+            btnStoprecording.setVisibility(View.VISIBLE);
+            isRecordingPlay = true;
+        }
+    }
+    public void stop(){
+        if (isRecordingPlay)
+        {
+            player.pause();
+
+            btnPlayRecording.setVisibility(View.VISIBLE);
+            btnStoprecording.setVisibility(View.GONE);
+            isRecordingPlay = false;
+        }
+    }
+
+    public void updateDataAdapterItem(){
+        //these two lines work for making the previous item selected in recycler view
+        RecordingItemAdapter.nextPreviousFromBtn = true;
+        RecordingItemAdapter.row_index = audio_index;
+        recordingItemAdapter.notifyDataSetChanged();  // without it next recording not show selected
+    }
+
+
 }
