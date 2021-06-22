@@ -6,148 +6,150 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_bg">
-
-
-    <ImageView
-        android:id="@+id/title_track"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/ic_txt_title_tracks"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txt_about_track"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Select the Track"
-        android:textAlignment="center"
-        android:textColor="@color/textSlogan"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_track" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_recordings"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="330dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_about_track"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout">
+        android:layout_height="match_parent"
+        android:weightSum="10"
+        android:orientation="vertical">
 
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
-        android:background="@drawable/ic_controls_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        <ImageView
+            android:id="@+id/title_track"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_txt_title_tracks"
+            android:layout_weight="0.6" />
 
         <TextView
+            android:id="@+id/txt_about_track"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
-            android:text="Recording Name"
-            android:textColor="@color/clickedBtntext"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:text="Select the Track"
+            android:textColor="@color/textSlogan"
             android:textSize="18dp" />
 
-        <soup.neumorphism.NeumorphImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:adjustViewBounds="true"
-            android:visibility="gone"
-            android:src="@drawable/ic_cancel_btn"
-            app:neumorph_shapeType="flat" />
-
-        <TextView
-            android:id="@+id/current"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"/>
-
-        <SeekBar
-            android:id="@+id/recording_progress"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recordings"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:progressTint="@color/clickedBtntext"
-            android:thumbTint="@color/clickedBtntext"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@+id/current"
-            android:layout_toLeftOf="@+id/total"/>
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="6.8">
 
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:00"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"/>
+        </androidx.recyclerview.widget.RecyclerView>
 
-        <ImageView
-            android:id="@+id/recording_play_btn"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_recordingbtnplay" />
-        <ImageView
-            android:id="@+id/recording_stop_btn"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:adjustViewBounds="true"
-            android:visibility="gone"
-            android:src="@drawable/ic_pause_recording" />
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/ic_controls_bg">
 
-        <ImageView
-            android:id="@+id/previous_recording"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginBottom="11dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_previousbtn" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:text="Recording Name"
+                android:textColor="@color/clickedBtntext"
+                android:textSize="18dp" />
 
-        <ImageView
-            android:id="@+id/next_recording"
-            android:layout_width="25dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="11dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_forwardbtn" />
+            <soup.neumorphism.NeumorphImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:adjustViewBounds="true"
+                android:visibility="gone"
+                android:src="@drawable/ic_cancel_btn"
+                app:neumorph_shapeType="flat" />
+
+            <TextView
+                android:id="@+id/current"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"/>
+
+            <SeekBar
+                android:id="@+id/recording_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressTint="@color/clickedBtntext"
+                android:thumbTint="@color/clickedBtntext"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/current"
+                android:layout_toLeftOf="@+id/total"/>
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"/>
+
+            <ImageView
+                android:id="@+id/recording_play_btn"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_recordingbtnplay" />
+            <ImageView
+                android:id="@+id/recording_stop_btn"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:visibility="gone"
+                android:src="@drawable/ic_pause_recording" />
 
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/previous_recording"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginBottom="11dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/view_clicl_unclick"/>
+
+            <ImageView
+                android:id="@+id/next_recording"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="11dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/view_click_unclick_forward" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

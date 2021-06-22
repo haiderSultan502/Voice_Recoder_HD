@@ -234,7 +234,7 @@
                 android:id="@+id/txt_recording_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="D:\Articles Pictures\Asif\Pending"
+                android:text="storage/emulator/VoiceRecorderHD"
                 android:textSize="13sp"
                 android:textColor="@color/lightTextColor"
                 android:layout_marginLeft="20dp"

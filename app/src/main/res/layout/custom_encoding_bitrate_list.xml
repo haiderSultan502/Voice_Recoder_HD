@@ -18,29 +18,49 @@
         android:layout_marginTop="15dp"
         android:theme="@style/MyRadioButton">
         <RadioButton
-            android:id="@+id/enoding_bitrate_48kHz"
+            android:id="@+id/enoding_bitrate_48kbps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="48KHz"
+            android:text="48Kbps"
             android:textSize="20dp"
             android:paddingLeft="20dp"
             android:paddingBottom="8dp"
             android:checked="true"/>
         <RadioButton
-            android:id="@+id/enoding_bitrate_96kHz"
+            android:id="@+id/enoding_bitrate_96kbps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="96KHz"
+            android:text="96Kbps"
             android:textSize="20dp"
             android:paddingLeft="20dp"
             android:layout_marginTop="20dp"
             android:paddingBottom="8dp"
             android:checked="false"/>
         <RadioButton
-            android:id="@+id/enoding_bitrate_128kHz"
+            android:id="@+id/enoding_bitrate_128kbps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="128KHz"
+            android:text="128Kbps"
+            android:textSize="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="8dp"
+            android:checked="false"/>
+        <RadioButton
+            android:id="@+id/enoding_bitrate_192kbps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="192Kbps"
+            android:textSize="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="8dp"
+            android:checked="false"/>
+        <RadioButton
+            android:id="@+id/enoding_bitrate_256kbps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="256Kbps"
             android:textSize="20dp"
             android:paddingLeft="20dp"
             android:layout_marginTop="20dp"

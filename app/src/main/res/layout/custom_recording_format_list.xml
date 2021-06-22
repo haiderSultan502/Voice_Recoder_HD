@@ -18,24 +18,35 @@
             android:layout_marginTop="15dp"
             android:theme="@style/MyRadioButton">
             <RadioButton
-                android:id="@+id/format_mp4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="mp4 ( Low Quality )"
-                android:textSize="20dp"
-                android:paddingLeft="20dp"
-                android:paddingBottom="8dp"
-                android:checked="true"/>
-            <RadioButton
                 android:id="@+id/format_mp3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="mp3 ( Medium Quality )"
+                android:text="mp3 ( Low Quality )"
                 android:textSize="20dp"
                 android:paddingLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:paddingBottom="8dp"
                 android:checked="false"/>
+            <RadioButton
+                android:id="@+id/format_aac"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="aac ( Decent Quality )"
+                android:textSize="20dp"
+                android:paddingLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="8dp"
+                android:checked="false"/>
+            <RadioButton
+                android:id="@+id/format_mp4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mp4 ( Good Quality )"
+                android:textSize="20dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="8dp"
+                android:checked="true"/>
             <RadioButton
                 android:id="@+id/format_wav"
                 android:layout_width="wrap_content"
@@ -46,16 +57,5 @@
                 android:layout_marginTop="20dp"
                 android:paddingBottom="8dp"
                 android:checked="false"/>
-            <RadioButton
-                android:id="@+id/format_aac"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="aac"
-                android:textSize="20dp"
-                android:paddingLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:paddingBottom="8dp"
-                android:checked="false"/>
-
         </RadioGroup>
 </LinearLayout>

@@ -33,6 +33,9 @@ public class SettingFragment extends Fragment {
 
     View view;
     Spinner spinnerRecordingFormat,sampleRateSpinner,encoderBitRateSpinner;
+    TextView storageLocation;
+
+    public static String recordingStorageLocation;
 
 //    String[] recordingFoormat={"Recording Format","mp3","m4a","wav"};
 //    String[] sampleRate = {"Sample Rate","8kHz","16kHz"};
@@ -78,6 +81,8 @@ public class SettingFragment extends Fragment {
 
     private void setRecordingDetails() {
 
+        storageLocation.setText(sharedPreferences.getString("storageLocation","storage/emulator/VoiceRecorderHD"));
+
         sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
         int formatId  = sharedPreferences.getInt("radioBtnId",R.id.format_mp4);
         RadioButton radioButtonRecordingFormat = dialogRecordingFormat.findViewById(formatId);
@@ -87,7 +92,7 @@ public class SettingFragment extends Fragment {
         RadioButton radioButtonSampleRate = dialogSampleRate.findViewById(sampleId);
         radioButtonSampleRate.setChecked(true);
 
-        int encodingId  = sharedPreferences.getInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_48kHz);
+        int encodingId  = sharedPreferences.getInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_48kbps);
         RadioButton radioButtonEncodingBitRate = dialogEncodingBitRate.findViewById(encodingId);
         radioButtonEncodingBitRate.setChecked(true);
 
@@ -180,6 +185,26 @@ public class SettingFragment extends Fragment {
                                 sharedPreferences.edit().putInt("radioBtnSampleRateId",R.id.sample_rate_16kHz).commit();
                                 tvRecordingSampleRate.setText("16kHz");
                                 break;
+                            case R.id.sample_rate_22kHz:
+                                sharedPreferences.edit().putInt("sampleRate",22000).commit();
+                                sharedPreferences.edit().putInt("radioBtnSampleRateId",R.id.sample_rate_22kHz).commit();
+                                tvRecordingSampleRate.setText("22kHz");
+                                break;
+                            case R.id.sample_rate_32kHz:
+                                sharedPreferences.edit().putInt("sampleRate",32000).commit();
+                                sharedPreferences.edit().putInt("radioBtnSampleRateId",R.id.sample_rate_32kHz).commit();
+                                tvRecordingSampleRate.setText("32kHz");
+                                break;
+                            case R.id.sample_rate_44kHz:
+                                sharedPreferences.edit().putInt("sampleRate",44100).commit();
+                                sharedPreferences.edit().putInt("radioBtnSampleRateId",R.id.sample_rate_44kHz).commit();
+                                tvRecordingSampleRate.setText("44.1kHz");
+                                break;
+                            case R.id.sample_rate_48kHz:
+                                sharedPreferences.edit().putInt("sampleRate",48000).commit();
+                                sharedPreferences.edit().putInt("radioBtnSampleRateId",R.id.sample_rate_48kHz).commit();
+                                tvRecordingSampleRate.setText("48kHz");
+                                break;
                         }
                         dialogSampleRate.dismiss();
                     }
@@ -196,20 +221,30 @@ public class SettingFragment extends Fragment {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
                         switch (checkedId){
-                            case R.id.enoding_bitrate_48kHz:
+                            case R.id.enoding_bitrate_48kbps:
                                 sharedPreferences.edit().putInt("encodingBitRate",48000).commit();
-                                sharedPreferences.edit().putInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_48kHz).commit();
+                                sharedPreferences.edit().putInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_48kbps).commit();
                                 tvEncodingRecordingBitrate.setText("48kHz");
                                 break;
-                            case R.id.enoding_bitrate_96kHz:
+                            case R.id.enoding_bitrate_96kbps:
                                 sharedPreferences.edit().putInt("encodingBitRate",96000).commit();
-                                sharedPreferences.edit().putInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_96kHz).commit();
+                                sharedPreferences.edit().putInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_96kbps).commit();
                                 tvEncodingRecordingBitrate.setText("96kHz");
                                 break;
-                            case R.id.enoding_bitrate_128kHz:
+                            case R.id.enoding_bitrate_128kbps:
                                 sharedPreferences.edit().putInt("encodingBitRate",128000).commit();
-                                sharedPreferences.edit().putInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_128kHz).commit();
+                                sharedPreferences.edit().putInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_128kbps).commit();
                                 tvEncodingRecordingBitrate.setText("128kHz");
+
+                            case R.id.enoding_bitrate_192kbps:
+                                sharedPreferences.edit().putInt("encodingBitRate",192000).commit();
+                                sharedPreferences.edit().putInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_192kbps).commit();
+                                tvEncodingRecordingBitrate.setText("192kHz");
+                                break;
+                            case R.id.enoding_bitrate_256kbps:
+                                sharedPreferences.edit().putInt("encodingBitRate",256000).commit();
+                                sharedPreferences.edit().putInt("radioBtnEncodingBitRateId",R.id.enoding_bitrate_256kbps).commit();
+                                tvEncodingRecordingBitrate.setText("256kHz");
                                 break;
                         }
                         dialogEncodingBitRate.dismiss();
@@ -387,6 +422,8 @@ public class SettingFragment extends Fragment {
         tvRecordingFormat = view.findViewById(R.id.selected_recording_format);
         tvRecordingSampleRate = view.findViewById(R.id.txt_recording_sample_rate);
         tvEncodingRecordingBitrate = view.findViewById(R.id.txt_recording_encoding_bitrate);
+
+        storageLocation = view.findViewById(R.id.txt_recording_location);
 
 
         dialogRecordingFormat = new Dialog(getActivity());

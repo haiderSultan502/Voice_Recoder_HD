@@ -36,6 +36,46 @@
             android:layout_marginTop="20dp"
             android:paddingBottom="8dp"
             android:checked="false"/>
+        <RadioButton
+            android:id="@+id/sample_rate_22kHz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22KHz"
+            android:textSize="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="8dp"
+            android:checked="false"/>
+        <RadioButton
+            android:id="@+id/sample_rate_32kHz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="32KHz"
+            android:textSize="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="8dp"
+            android:checked="false"/>
+        <RadioButton
+            android:id="@+id/sample_rate_44kHz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="44.1KHz"
+            android:textSize="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="8dp"
+            android:checked="false"/>
+        <RadioButton
+            android:id="@+id/sample_rate_48kHz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="48KHz"
+            android:textSize="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="8dp"
+            android:checked="false"/>
 
     </RadioGroup>
 </LinearLayout>

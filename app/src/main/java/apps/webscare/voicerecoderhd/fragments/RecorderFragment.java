@@ -262,6 +262,11 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     private void createFolderToStoreRecording() {
 
         File myDirectory  = new File(Environment.getExternalStorageDirectory(),"VoiceRecorderHD");
+
+        String storageLocation = myDirectory.getAbsolutePath();
+
+        sharedPreferences.edit().putString("storageLocation",storageLocation).commit();
+
         if (!myDirectory.exists()){
             myDirectory.mkdirs();
         }
