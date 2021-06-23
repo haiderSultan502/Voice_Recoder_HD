@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import java.util.Collections;
@@ -45,10 +48,15 @@ public class SettingFragment extends Fragment {
     LinearLayout recordingFormat,sampleRate,encodingBitRate;
 
     RadioGroup radioGroupRecordingFormat,radioGroupSampeRate,radioGroupEncodingBitRate;
+    RadioButton pcmFormat;
+
 
     Dialog dialogRecordingFormat,dialogSampleRate,dialogEncodingBitRate;
 
     TextView tvRecordingFormat,tvRecordingSampleRate,tvEncodingRecordingBitrate;
+
+    Animation animSlideUp;
+    ConstraintLayout constraintLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -151,11 +159,20 @@ public class SettingFragment extends Fragment {
                                 sharedPreferences.edit().putString("recordingFormat","wav").commit();
                                 sharedPreferences.edit().putInt("radioBtnId",R.id.format_wav).commit();
                                 tvRecordingFormat.setText("wav");
+
+
+
                                 break;
                             case R.id.format_aac:
                                 sharedPreferences.edit().putString("recordingFormat","aac").commit();
                                 sharedPreferences.edit().putInt("radioBtnId",R.id.format_aac).commit();
                                 tvRecordingFormat.setText("aac");
+
+                                break;
+                            case R.id.format_pcm:
+                                sharedPreferences.edit().putString("recordingFormat","pcm").commit();
+                                sharedPreferences.edit().putInt("radioBtnId",R.id.format_pcm).commit();
+                                tvRecordingFormat.setText("pcm");
                                 break;
                         }
                         dialogRecordingFormat.dismiss();
@@ -352,6 +369,8 @@ public class SettingFragment extends Fragment {
 
     private void initialization() {
 
+        animSlideUp = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_up);
+
         sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
 
     }
@@ -415,6 +434,8 @@ public class SettingFragment extends Fragment {
 //        sampleRateSpinner = view.findViewById(R.id.rate_spinner);
 //        encoderBitRateSpinner = view.findViewById(R.id.encoder_bit_rate_spinner);
 
+        constraintLayout = view.findViewById(R.id.parent_constraint_layout);
+
         recordingFormat = view.findViewById(R.id.recording_format_click_listener);
         sampleRate = view.findViewById(R.id.recording_sample_rate_click_listener);
         encodingBitRate = view.findViewById(R.id.recording_encoding_bitrate_click_listnenr);
@@ -431,6 +452,7 @@ public class SettingFragment extends Fragment {
         dialogRecordingFormat.setContentView(R.layout.custom_recording_format_list);
         dialogRecordingFormat.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT); //set the dialog dimension
         radioGroupRecordingFormat = dialogRecordingFormat.findViewById(R.id.recording_format_radio_group) ;
+        pcmFormat = dialogRecordingFormat.findViewById(R.id.format_pcm);
 
         dialogSampleRate = new Dialog(getActivity());
         dialogSampleRate.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -444,13 +466,7 @@ public class SettingFragment extends Fragment {
         dialogEncodingBitRate.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT); //set the dialog dimension
         radioGroupEncodingBitRate = dialogEncodingBitRate.findViewById(R.id.recording_encoding_bitrate_radio_group) ;
 
-
-
-
-
-
-
-
+        constraintLayout.setAnimation(animSlideUp);
 
     }
 

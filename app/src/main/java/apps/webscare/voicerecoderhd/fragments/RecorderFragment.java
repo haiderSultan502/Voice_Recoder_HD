@@ -204,8 +204,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         recorder.setAudioSamplingRate(setSampleRate);
         recorder.setAudioEncodingBitRate(setEncodingBitRate);
-        Toast.makeText(getActivity(), "sample rate " + setSampleRate, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), "encoding bitRate " + setEncodingBitRate, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "sample rate " + setSampleRate, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "encoding bitRate " + setEncodingBitRate, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getActivity(), "format " + setOutputFormat, Toast.LENGTH_SHORT).show();
         recorder.setOutputFile(filePath);
 

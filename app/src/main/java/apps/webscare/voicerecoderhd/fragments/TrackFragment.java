@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import apps.webscare.voicerecoderhd.R;
 import apps.webscare.voicerecoderhd.adapters.RecordingItemAdapter;
@@ -43,12 +44,12 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
     RecyclerView rvRecordings;
     static ImageView btnPlayRecording,btnStoprecording,nextRecording,previousRecording;
     SeekBar seekBar;
-    int currentPosition,totalDuration;
+    int currentPosition,totalDuration,currentPositionInSec,totalDurationInSecond;
+
     TextView current,total;
     ConstraintLayout constraintLayout;
 
     public static  MediaPlayer player;
-    Boolean recordingPlayStatus=false;
 
     ArrayList<ModelRecordings> audioArrayList;
     int audio_index = 0;
@@ -141,12 +142,13 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
     }
 
     //time conversion
-    public String timeConversion(long value) {
+    public String timeConversion(long milliseconds) {
+
+
         String audioTime;
-        int dur = (int) value;
-        int hrs = (dur / 3600000);
-        int mns = (dur / 60000) % 60000;
-        int scs = dur % 60000 / 1000;
+        long hrs = TimeUnit.MILLISECONDS.toHours(milliseconds);
+        long mns = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
+        long scs = TimeUnit.MILLISECONDS.toSeconds(milliseconds);
 
         if (hrs > 0) {
             audioTime = String.format("%02d:%02d:%02d", hrs, mns, scs);
@@ -187,7 +189,15 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         currentPosition = player.getCurrentPosition();
         totalDuration = player.getDuration();
 
-        seekBar.setMax(totalDuration);
+
+        currentPositionInSec = (int) TimeUnit.MILLISECONDS.toSeconds(currentPosition);
+        totalDurationInSecond = (int) TimeUnit.MILLISECONDS.toSeconds(totalDuration);
+
+
+        seekBar.setProgress(currentPositionInSec);
+        seekBar.setMax(totalDurationInSecond);
+
+
 
         current.setText(timeConversion((long) currentPosition));
         total.setText(timeConversion((long) totalDuration));
@@ -198,32 +208,24 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
             @Override
             public void run() {
                 currentPosition = player.getCurrentPosition();
+                currentPositionInSec = (int) TimeUnit.MILLISECONDS.toSeconds(currentPosition);
                 current.setText(timeConversion((long) currentPosition));
-                seekBar.setProgress(currentPosition);
-                seekBar.setKeyProgressIncrement(1);
-                handler.postDelayed(this,1000);
+                seekBar.setProgress(currentPositionInSec);
+//                seekBar.setKeyProgressIncrement(1);
+                handler.postDelayed(this,500);
 //                int progress = seekBar.getProgress();
 //                if (progress == totalDuration) {
 ////                    Toast.makeText(getActivity(), "Progress", Toast.LENGTH_SHORT).show();
 //                }
             }
         };
-        handler.postDelayed(runnable,1000);
+        handler.postDelayed(runnable,500);
 
+    }
 
-
-
-//        final Handler handler = new Handler();
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                currentPosition = player.getCurrentPosition();
-//                current.setText(timeConversion((long) currentPosition));
-//                seekBar.setProgress(currentPosition);
-//                handler.postDelayed(this,1000);
-//            }
-//        };
-//        handler.postDelayed(runnable,1000);
+    private int convertMillisecodToSecond(int millisecond){
+        int second = (int) TimeUnit.MILLISECONDS.toSeconds(millisecond);
+        return second;
     }
 
     private void initialization() {
