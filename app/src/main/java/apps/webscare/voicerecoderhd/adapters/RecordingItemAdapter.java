@@ -40,12 +40,12 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
     OnItemClickListener onItemClickListener;
     public static int row_index = -1 ;
 //    public static int rowIndex2 = -1;
-    public boolean playStatus = false;
-    int previousItemPosition,newItemPosition;
+    public static boolean playStatus = false;
+    static int previousItemPosition,newItemPosition;
     TrackFragment trackFragment;
-    boolean sameRecordingPlayPauseStatus = false;
+    static boolean sameRecordingPlayPauseStatus = false;
     public static boolean nextPreviousFromBtn = false;
-    public static boolean btnPlayStatus,btnStopStatus;
+    public static boolean btnPlayStatus,btnStopStatus,recordingCompleteStatus;
 
 
     public RecordingItemAdapter(Context context,ArrayList<ModelRecordings> audioArrayList){
@@ -83,6 +83,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
                     playStatus = true;
 
                 } else {
+
                     newItemPosition = position;
                     if (previousItemPosition == newItemPosition )
                     {
@@ -146,6 +147,10 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             if (btnStopStatus == true){
                 holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
                 btnStopStatus = false;
+            }
+            if (recordingCompleteStatus == true){
+                holder.neumorphImageView.setImageResource(R.drawable.ic_play_icon);
+                recordingCompleteStatus = false;
             }
 
 

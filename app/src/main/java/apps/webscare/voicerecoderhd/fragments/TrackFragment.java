@@ -43,20 +43,23 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
     View view,views;
     RecyclerView rvRecordings;
     static ImageView btnPlayRecording,btnStoprecording,nextRecording,previousRecording;
-    SeekBar seekBar;
-    int currentPosition,totalDuration,currentPositionInSec,totalDurationInSecond;
+    static SeekBar seekBar;
+    static double currentPosition = 0 ,totalDuration,currentPositionInSec,totalDurationInSecond;
 
-    TextView current,total;
+    TextView current,total,recordingName;
     ConstraintLayout constraintLayout;
 
     public static  MediaPlayer player;
 
     ArrayList<ModelRecordings> audioArrayList;
-    int audio_index = 0;
+    static int audio_index = 0;
     Animation animSlideUp;
 
-    private static boolean isRecordingPlay =  false;
+    private static boolean isRecordingPlay =  false, isRecordingFinished = false;
     static RecordingItemAdapter recordingItemAdapter;
+
+    String title;
+
 
     @Nullable
     @Override
@@ -64,10 +67,13 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
         view =inflater.inflate(R.layout.track_fragment,container,false);
 
+//        recordingItemAdapter.notifyDataSetChanged();
         viewBindings();
         initialization();
 
         getAudioRecordings();
+
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -87,6 +93,13 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+
+//            seekBar.setProgress((int) currentPosition);
+//            seekBar.setMax((int) totalDuration);
+//            current.setText(timeConversion((long) currentPosition));
+
+
+
 //        setDataInRecyclerView();
 
         return view;
@@ -132,6 +145,8 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         recordingItemAdapter = new RecordingItemAdapter(getActivity(),audioArrayList);
         rvRecordings.setAdapter(recordingItemAdapter);
 
+
+
         recordingItemAdapter.setOnItemClickListener(new RecordingItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos, View v) {
@@ -166,6 +181,12 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         btnStoprecording.setVisibility(View.VISIBLE);
         btnPlayRecording.setVisibility(View.GONE);
 
+        title = audioArrayList.get(pos).getTitle();
+
+        recordingName.setText(title);
+
+
+
 
 //        btnPlayRecording.setImageResource(R.drawable.ic_pause_recording);
 
@@ -190,17 +211,20 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         totalDuration = player.getDuration();
 
 
-        currentPositionInSec = (int) TimeUnit.MILLISECONDS.toSeconds(currentPosition);
-        totalDurationInSecond = (int) TimeUnit.MILLISECONDS.toSeconds(totalDuration);
-
-
-        seekBar.setProgress(currentPositionInSec);
-        seekBar.setMax(totalDurationInSecond);
-
-
-
         current.setText(timeConversion((long) currentPosition));
         total.setText(timeConversion((long) totalDuration));
+
+//        currentPositionInSec = (int) TimeUnit.MILLISECONDS.toSeconds(currentPosition);
+//        totalDurationInSecond = (int) TimeUnit.MILLISECONDS.toSeconds(totalDuration);
+//
+//
+//        seekBar.setProgress(currentPositionInSec);
+
+        seekBar.setMax((int) totalDuration);
+
+
+
+
 
 
         final Handler handler = new Handler(Looper.getMainLooper());
@@ -208,24 +232,47 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
             @Override
             public void run() {
                 currentPosition = player.getCurrentPosition();
-                currentPositionInSec = (int) TimeUnit.MILLISECONDS.toSeconds(currentPosition);
+//                currentPositionInSec = (int) TimeUnit.MILLISECONDS.toSeconds(currentPosition);
                 current.setText(timeConversion((long) currentPosition));
-                seekBar.setProgress(currentPositionInSec);
+                seekBar.setProgress((int) currentPosition);
 //                seekBar.setKeyProgressIncrement(1);
-                handler.postDelayed(this,500);
+                handler.postDelayed(this,1000);
 //                int progress = seekBar.getProgress();
 //                if (progress == totalDuration) {
 ////                    Toast.makeText(getActivity(), "Progress", Toast.LENGTH_SHORT).show();
 //                }
             }
         };
-        handler.postDelayed(runnable,500);
+        handler.postDelayed(runnable,1000);
+
+
+        resetSeekbar();
+
 
     }
 
-    private int convertMillisecodToSecond(int millisecond){
-        int second = (int) TimeUnit.MILLISECONDS.toSeconds(millisecond);
-        return second;
+    private void resetSeekbar() {
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+
+//                Toast.makeText(getActivity(), "Set seekbar", Toast.LENGTH_SHORT).show();
+                seekBar.setProgress(0);
+                player.reset();
+                RecordingItemAdapter.playStatus = false;
+                recordingItemAdapter.notifyDataSetChanged();
+
+                RecordingItemAdapter.recordingCompleteStatus =true;
+                recordingItemAdapter.notifyDataSetChanged();
+//
+                btnStoprecording.setVisibility(View.GONE);
+                btnPlayRecording.setVisibility(View.VISIBLE);
+
+                isRecordingFinished = true;
+
+
+            }
+        });
     }
 
     private void initialization() {
@@ -235,7 +282,10 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         animSlideUp = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_up);
         constraintLayout.startAnimation(animSlideUp);
 
-        player = new MediaPlayer();
+        if (player==null){
+            player = new MediaPlayer();
+        }
+
 
     }
 
@@ -250,6 +300,8 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         btnStoprecording = view.findViewById(R.id.recording_stop_btn);
         current = view.findViewById(R.id.current);
         total = view.findViewById(R.id.total);
+        recordingName = view.findViewById(R.id.recording_name);
+
 
         btnPlayRecording.setOnClickListener(this);
         nextRecording.setOnClickListener(this);
@@ -264,37 +316,6 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
         rvRecordings.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
     }
-
-//    private void playRecording() {
-//        player = new MediaPlayer();
-//        try {
-//            player.setDataSource(RecorderFragment.filePath);
-//
-//            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                @Override
-//                public void onCompletion(MediaPlayer mp) {
-//                    stopPlayingRecording();
-//                }
-//            });
-//
-//            player.prepare();
-//            player.start();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
-//
-//    private void stopPlayingRecording() {
-//
-//        if (player!=null)
-//        {
-//            player.release();
-//            player = null;
-//        }
-//
-//    }
 
     @Override
     public void onClick(View v) {
@@ -377,13 +398,19 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         if (isRecordingPlay==false) {
             player.start();
 
-            btnPlayRecording.setVisibility(View.GONE);
-            btnStoprecording.setVisibility(View.VISIBLE);
-            isRecordingPlay = true;
-
-            RecordingItemAdapter.btnPlayStatus =true;
-            recordingItemAdapter.notifyDataSetChanged();
         }
+        if (isRecordingFinished){
+            playRecording(audio_index);
+            isRecordingFinished = false;
+            updateDataAdapterItem();
+        }
+
+        btnPlayRecording.setVisibility(View.GONE);
+        btnStoprecording.setVisibility(View.VISIBLE);
+        isRecordingPlay = true;
+
+        RecordingItemAdapter.btnPlayStatus =true;
+        recordingItemAdapter.notifyDataSetChanged();
 
 
 
@@ -407,6 +434,9 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
             btnPlayRecording.setVisibility(View.VISIBLE);
             btnStoprecording.setVisibility(View.GONE);
             isRecordingPlay = false;
+
+            RecordingItemAdapter.btnStopStatus = true;
+            recordingItemAdapter.notifyDataSetChanged();
         }
     }
 
@@ -417,5 +447,33 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
         recordingItemAdapter.notifyDataSetChanged();  // without it next recording not show selected
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        if (isRecordingPlay){
+            player.pause();
+//        }
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (player!=null){
+
+            currentPosition = player.getCurrentPosition();
+            totalDuration = player.getDuration();
+
+            current.setText(timeConversion((long) currentPosition));
+            total.setText(timeConversion((long) totalDuration));
+
+            seekBar.setMax((int) totalDuration);
+            seekBar.setProgress((int) currentPosition);
+
+            setAudioProgress();
+
+
+        }
+    }
 }
