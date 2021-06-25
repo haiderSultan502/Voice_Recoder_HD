@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.List;
 
 import apps.webscare.voicerecoderhd.R;
+import apps.webscare.voicerecoderhd.Util;
 import apps.webscare.voicerecoderhd.VisualizerView;
 import soup.neumorphism.NeumorphFloatingActionButton;
 
@@ -64,6 +65,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     Handler handler;
     private boolean isRecording = false;
     public static final int REPEAT_INTERVAL = 30; // by default 40 value
+    public  Util util;
 
     @Nullable
     @Override
@@ -118,20 +120,32 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         {
             case R.id.btn_record:
 
-                if (recordingStartStatus == false){
-                    Toast.makeText(getActivity(), "Recording Start", Toast.LENGTH_SHORT).show();
-//                    lottieAnimationView.playAnimation();
-                    btnStartRecording.setShapeType(2);
-                    startRecording();
-                    recordingStartStatus = true;
+                sharedPreferences = getActivity().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
+
+                boolean permissionGranted = sharedPreferences.getBoolean("allPermissionGranted", false);
+
+                if (permissionGranted == false){
+                    util = new Util(getActivity());
+                    util.requestMultplePermission(getActivity());
                 }
                 else {
-                    Toast.makeText(getActivity(), "Recording End", Toast.LENGTH_SHORT).show();
+                    if (recordingStartStatus == false){
+                        Toast.makeText(getActivity(), "Recording Start", Toast.LENGTH_SHORT).show();
+//                    lottieAnimationView.playAnimation();
+                        btnStartRecording.setShapeType(2);
+                        startRecording();
+                        recordingStartStatus = true;
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "Recording End", Toast.LENGTH_SHORT).show();
 //                    lottieAnimationView.pauseAnimation();
-                    btnStartRecording.setShapeType(0);
-                    stopRecording();
-                    recordingStartStatus = false;
+                        btnStartRecording.setShapeType(0);
+                        stopRecording();
+                        recordingStartStatus = false;
+                    }
                 }
+
+
                 break;
         }
 

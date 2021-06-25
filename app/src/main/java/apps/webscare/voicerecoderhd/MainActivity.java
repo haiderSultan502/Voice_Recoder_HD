@@ -13,9 +13,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
@@ -49,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NeumorphTextView neumorphTextView;
     int btnBgColor,btnTxtColor;
     ElasticLayout elasticLayoutBtnRecorder,elasticLayoutBtnTracker,elasticLayoutBtnSetting;
-    SharedPreferences sharedPreferences;
+    public  SharedPreferences sharedPreferences;
+    public  Util util;
+    public  boolean permissionGranted;
 
 
 
@@ -58,9 +62,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = getApplicationContext().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
+
+        checkPermissionStatus();
 
 
-        Util.requestMultplePermission(this);
+
+
+
+
 
         viewBndings();
 
@@ -69,6 +79,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+    }
+
+    public void checkPermissionStatus() {
+
+
+
+        permissionGranted = sharedPreferences.getBoolean("allPermissionGranted",false);
+
+        if (permissionGranted == false){
+            util = new Util(this);
+            util.requestMultplePermission(this);
+        }
     }
 
     private void viewBndings() {
@@ -109,10 +131,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 replaceFragmnet(new RecorderFragment());
                 break;
             case R.id.elastic_lyout_btn_tracker:
-                setBtn(3,"ON");
-                setBtn(0,"OFF");
-                setBtn(6,"OFF");
-                replaceFragmnet(new TrackFragment());
+
+
+                permissionGranted = sharedPreferences.getBoolean("allPermissionGranted",false);
+
+                if (permissionGranted == false){
+                    util = new Util(this);
+                    util.requestMultplePermission(this);
+                }
+                else {
+                    setBtn(3,"ON");
+                    setBtn(0,"OFF");
+                    setBtn(6,"OFF");
+                    replaceFragmnet(new TrackFragment());
+                }
+
                 break;
             case R.id.elastic_lyout_btn_setting:
                 setBtn(6,"ON");
