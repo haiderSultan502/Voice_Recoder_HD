@@ -5,12 +5,15 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -122,6 +125,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             }
         });
 
+
         if (row_index == position){
 
             if (nextPreviousFromBtn == true){
@@ -161,6 +165,13 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             holder.btnPlay.setBackgroundColor(ContextCompat.getColor(context,R.color.recordingItemBgUnPressedColor));
             holder.neumorphImageView.setImageResource(R.drawable.ic_music);
         }
+
+        holder.recordingPopupMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup(v);
+            }
+        });
 
         holder.recordingName.setText(audioArrayList.get(position).getTitle());
         holder.dateAndTime.setText(audioArrayList.get(position).getDate());
@@ -202,6 +213,16 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             player = null;
         }
     }
+    private void showPopup(View v) {
+
+//        add oncreta option menu in main activity
+        PopupMenu popup = new PopupMenu(context, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.recording_menu, popup.getMenu());
+        popup.show();
+
+    }
+
 
     class ItemViewHolder extends RecyclerView.ViewHolder
     {
@@ -210,6 +231,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
         NeumorphImageView neumorphImageView;
         RelativeLayout cardViewParentItem;
         NeumorphTextView recordingName,dateAndTime,duration,recordingFormat;
+        ImageButton recordingPopupMenu;
 
 
 
@@ -224,6 +246,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             dateAndTime = itemView.findViewById(R.id.time_and_date);
             duration = itemView.findViewById(R.id.duration);
             recordingFormat = itemView.findViewById(R.id.recording_format);
+            recordingPopupMenu = itemView.findViewById(R.id.recording_popup_menu);
         }
 
     }
@@ -233,8 +256,12 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
         this.onItemClickListener = onItemClickListener;
 
     }
+
+
     //this interface is make for getting the position of selected item in adapter
     public interface OnItemClickListener{
         void onItemClick(int pos, View v);
     }
+
+
 }

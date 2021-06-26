@@ -2,9 +2,10 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize Your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/clickedBtntext</item>
+        <item name="colorPrimaryDark">@color/clickedBtntext</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>      // this style for change the text color of popup menu item that define below
     </style>
 
 
@@ -27,6 +28,12 @@
     <style name="MyRadioButton" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/clickedBtntext</item>
         <item name="colorControlNormal">@color/unclickedBtntext</item>
+    </style>
+
+    // this code for change the text color of popup menu item
+    // after this add it on app theme above
+    <style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/recordingTitle</item>
     </style>
 
 </resources>
