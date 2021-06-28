@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -40,6 +41,7 @@ import java.util.List;
 import apps.webscare.voicerecoderhd.R;
 import apps.webscare.voicerecoderhd.Util;
 import apps.webscare.voicerecoderhd.VisualizerView;
+import apps.webscare.voicerecoderhd.models.ModelRecordings;
 import soup.neumorphism.NeumorphFloatingActionButton;
 
 public class RecorderFragment extends Fragment implements View.OnClickListener {
@@ -61,6 +63,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     SharedPreferences sharedPreferences;
 
     VisualizerView visualizerView;
+
+    Uri myRowUri;
 
     Handler handler;
     private boolean isRecording = false;
@@ -182,6 +186,7 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     }
 
     private void createContentValues(){
+        ModelRecordings modelRecordings = new ModelRecordings();
 
         //creating content value object to store the data in table using  key value pair and here the key is column name,
         //and  the table in which we store data is  MediaStore.Audio.Media.EXTERNAL_CONTENT_URI which is
@@ -191,8 +196,11 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         values.put(MediaStore.Audio.Media.DATA,filePath);
         values.put(MediaStore.Audio.Media.MIME_TYPE,setRecordingFormat);
         values.put(MediaStore.Audio.Media.TITLE,audioFile);
+
         //store audio recorder file in the external content uri
-        getActivity().getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,values);
+        myRowUri =  getActivity().getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,values);
+
+//        modelRecordings.setDbRowUri(myRowUri);
     }
 
     private void startRecording() {
@@ -291,6 +299,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
         audioFile = "REC" +  date;
 
         filePath = myDirectory.getAbsolutePath() + File.separator + audioFile + "."+ setRecordingFormat;
+
+
 
     }
 

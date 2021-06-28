@@ -7,6 +7,15 @@ public class ModelRecordings {
     String title;
     String date;
     String format;
+    Uri dbRowUri;
+
+    public Uri getDbRowUri() {
+        return dbRowUri;
+    }
+
+    public void setDbRowUri(Uri dbRowUri) {
+        this.dbRowUri = dbRowUri;
+    }
 
     public String getFormat() {
         return format;

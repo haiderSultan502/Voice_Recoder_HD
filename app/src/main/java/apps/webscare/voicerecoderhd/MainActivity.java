@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         sharedPreferences = getApplicationContext().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
 
         checkPermissionStatus();
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //
 //        return true;
 //    }
+
 
     private void viewBndings() {
 
@@ -144,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+
 
     private void setBtn(int index, String checkBtnStatus) {
 

@@ -1,11 +1,16 @@
 package apps.webscare.voicerecoderhd.adapters;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,7 +27,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import apps.webscare.voicerecoderhd.MainActivity;
@@ -66,6 +73,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
 
         return new ItemViewHolder(view);
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull final RecordingItemAdapter.ItemViewHolder holder, final int position) {
@@ -169,7 +177,8 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
         holder.recordingPopupMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopup(v);
+//                context.onCreateOptionsMenu();
+                showPopup(v,position);
             }
         });
 
@@ -213,16 +222,79 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             player = null;
         }
     }
-    private void showPopup(View v) {
+
+    private void showPopup(View v, final int pos) {
 
 //        add oncreta option menu in main activity
         PopupMenu popup = new PopupMenu(context, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.recording_menu, popup.getMenu());
+
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.share:
+                        Toast.makeText(context, "Share", Toast.LENGTH_SHORT).show();
+
+                        return true;
+                    case R.id.rename:
+                        Toast.makeText(context, "rename", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.delete:
+                        Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+
+//                        File myDirectory  = Environment.getExternalStorageDirectory();
+//                        File file = new File(myDirectory, "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." + audioArrayList.get(pos).getFormat());
+//                        boolean checkStatus = file.delete();
+
+//                        String path = myDirectory.getAbsolutePath() + "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." +  audioArrayList.get(pos).getFormat();
+
+//                        Log.d("path", "onMenuItemClick: " + path);
+
+//                        Uri urii = audioArrayList.get(pos).getDbRowUri();
+//
+//                        context.getContentResolver().delete(audioArrayList.get(pos).getDbRowUri(),null,null);
+
+                        audioArrayList.remove(pos);
+                        notifyItemRemoved(pos);
+                        notifyItemRangeChanged(pos,audioArrayList.size());
+
+
+//                        context.getContentResolver().notifyChange (uri, null);
+
+
+
+
+                        return true;
+                    default:
+                        return false;
+                }
+
+
+            }
+        });
+
         popup.show();
 
     }
 
+
+//    private void setIconsVisible(Menu menu, boolean flag) {
+//        // determine whether the menu is empty
+//        if(menu != null) {
+//            try {
+//                // if not empty, get a reflection of setOptionalIconsVisible method menu
+//                Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+//                // access the method violence
+//                method.setAccessible(true);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     class ItemViewHolder extends RecyclerView.ViewHolder
     {
@@ -261,6 +333,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
     //this interface is make for getting the position of selected item in adapter
     public interface OnItemClickListener{
         void onItemClick(int pos, View v);
+//        void onOptionsMenuChangeRequested();
     }
 
 
