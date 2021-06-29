@@ -246,11 +246,11 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
                     case R.id.delete:
                         Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
 
-//                        File myDirectory  = Environment.getExternalStorageDirectory();
-//                        File file = new File(myDirectory, "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." + audioArrayList.get(pos).getFormat());
-//                        boolean checkStatus = file.delete();
+                        File myDirectory  = Environment.getExternalStorageDirectory();
+                        File file = new File(myDirectory, "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." + audioArrayList.get(pos).getFormat());
+                        boolean checkStatus = file.delete();
 
-//                        String path = myDirectory.getAbsolutePath() + "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." +  audioArrayList.get(pos).getFormat();
+                        String path = myDirectory.getAbsolutePath() + "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." +  audioArrayList.get(pos).getFormat();
 
 //                        Log.d("path", "onMenuItemClick: " + path);
 
@@ -262,11 +262,15 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
                         notifyItemRemoved(pos);
                         notifyItemRangeChanged(pos,audioArrayList.size());
 
+//                        String where = MediaStore.Audio.Media.DATA + "=" + "?";
+//                        String[] args = new String[] { path };
+//                        context.getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,where,args);
+
+                        RecorderFragment recorderFragment = new RecorderFragment();
+                        Uri uri = Uri.parse(RecorderFragment.sUri);
+                        context.getContentResolver().delete(uri,null,null);
 
 //                        context.getContentResolver().notifyChange (uri, null);
-
-
-
 
                         return true;
                     default:

@@ -35,12 +35,14 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import apps.webscare.voicerecoderhd.R;
 import apps.webscare.voicerecoderhd.Util;
 import apps.webscare.voicerecoderhd.VisualizerView;
+import apps.webscare.voicerecoderhd.models.ModelRecordingRowUri;
 import apps.webscare.voicerecoderhd.models.ModelRecordings;
 import soup.neumorphism.NeumorphFloatingActionButton;
 
@@ -64,12 +66,14 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     VisualizerView visualizerView;
 
-    Uri myRowUri;
+   public Uri myRowUri;
+   public static String sUri;
 
     Handler handler;
     private boolean isRecording = false;
     public static final int REPEAT_INTERVAL = 30; // by default 40 value
     public  Util util;
+    ArrayList<Uri> uriArrayList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -155,8 +159,6 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     }
 
-
-
     private void stopRecording() {
 
         visualizerView.setVisibility(View.GONE);
@@ -186,7 +188,8 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
     }
 
     private void createContentValues(){
-        ModelRecordings modelRecordings = new ModelRecordings();
+
+        ModelRecordingRowUri modelRecordingRowUri = new ModelRecordingRowUri();
 
         //creating content value object to store the data in table using  key value pair and here the key is column name,
         //and  the table in which we store data is  MediaStore.Audio.Media.EXTERNAL_CONTENT_URI which is
@@ -199,6 +202,20 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         //store audio recorder file in the external content uri
         myRowUri =  getActivity().getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,values);
+
+        sUri = String.valueOf(myRowUri);
+
+        ContentValues values2 = new ContentValues();
+        values2.put(MediaStore.Audio.Media.DATA,sUri);
+
+        getActivity().getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,values2);
+
+//        modelRecordingRowUri.setUriRecordingRow(myRowUri);
+//
+//        uriArrayList.add(myRowUri);
+
+
+
 
 //        modelRecordings.setDbRowUri(myRowUri);
     }

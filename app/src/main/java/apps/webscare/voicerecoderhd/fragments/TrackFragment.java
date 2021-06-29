@@ -112,13 +112,20 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI; // uri : uniform resource identifier provide the actual data that we want to access
 
+
         Cursor cursor = contentResolver.query(uri,null, MediaStore.Audio.Media.DATA + " like ?",new String[]{"%VoiceRecorderHD%"},null);
 
-        if (cursor != null && cursor.moveToFirst()){
+        Cursor cursor1 = contentResolver.query(uri,null, MediaStore.Audio.Media.DATA + " like ?",new String[]{"%VoiceRecorderHD%"},null,null);
+
+        if (cursor != null && cursor1 != null && cursor.moveToFirst() && cursor1.moveToFirst()){
             do {
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                 String recordingFormat = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE));
+
+                String recordingRowUri = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.DATA));
+
+                Uri uri1 = Uri.parse(recordingRowUri);
 
                 ModelRecordings modelRecordings = new ModelRecordings();
                 modelRecordings.setTitle(title);
@@ -141,7 +148,8 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
                 modelRecordings.setFormat(fileFomat);
 
                 audioArrayList.add(modelRecordings);
-            } while(cursor.moveToNext());
+
+            } while(cursor.moveToNext() && cursor1.moveToNext());
         }
         recordingItemAdapter = new RecordingItemAdapter(getActivity(),audioArrayList);
         rvRecordings.setAdapter(recordingItemAdapter);
