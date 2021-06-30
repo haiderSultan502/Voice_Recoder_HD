@@ -42,7 +42,6 @@ import java.util.List;
 import apps.webscare.voicerecoderhd.R;
 import apps.webscare.voicerecoderhd.Util;
 import apps.webscare.voicerecoderhd.VisualizerView;
-import apps.webscare.voicerecoderhd.models.ModelRecordingRowUri;
 import apps.webscare.voicerecoderhd.models.ModelRecordings;
 import soup.neumorphism.NeumorphFloatingActionButton;
 
@@ -189,7 +188,6 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
     private void createContentValues(){
 
-        ModelRecordingRowUri modelRecordingRowUri = new ModelRecordingRowUri();
 
         //creating content value object to store the data in table using  key value pair and here the key is column name,
         //and  the table in which we store data is  MediaStore.Audio.Media.EXTERNAL_CONTENT_URI which is
@@ -202,6 +200,9 @@ public class RecorderFragment extends Fragment implements View.OnClickListener {
 
         //store audio recorder file in the external content uri
         myRowUri =  getActivity().getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,values);
+
+
+        //the below snippet write for delete the record item from table of external content uri otherwise recording just delete from storage instead of table due to which app crash
 
         sUri = String.valueOf(myRowUri);
 

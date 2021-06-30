@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null);
         sharedPreferences = getApplicationContext().getSharedPreferences("recordingInfo", Context.MODE_PRIVATE);
 
         checkPermissionStatus();

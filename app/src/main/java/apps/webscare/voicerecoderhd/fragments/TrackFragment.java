@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,9 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
     static ImageView btnPlayRecording,btnStoprecording,nextRecording,previousRecording;
     static SeekBar seekBar;
     static double currentPosition = 0 ,totalDuration,currentPositionInSec,totalDurationInSecond;
+    MediaMetadataRetriever retriever ;
+
+    static boolean recFoundStatus = true;
 
     TextView current,total,recordingName;
     ConstraintLayout constraintLayout;
@@ -115,7 +119,7 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
         Cursor cursor = contentResolver.query(uri,null, MediaStore.Audio.Media.DATA + " like ?",new String[]{"%VoiceRecorderHD%"},null);
 
-        Cursor cursor1 = contentResolver.query(uri,null, MediaStore.Audio.Media.DATA + " like ?",new String[]{"%VoiceRecorderHD%"},null,null);
+        Cursor cursor1 = contentResolver.query(uri,null, MediaStore.Audio.Media.DATA + " like ?",new String[]{"%content://%"},null,null); // this line for getting the uri of row that insert in table so we can delete the recording
 
         if (cursor != null && cursor1 != null && cursor.moveToFirst() && cursor1.moveToFirst()){
             do {
@@ -123,31 +127,48 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
                 String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                 String recordingFormat = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE));
 
-                String recordingRowUri = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.DATA));
 
-                Uri uri1 = Uri.parse(recordingRowUri);
 
-                ModelRecordings modelRecordings = new ModelRecordings();
-                modelRecordings.setTitle(title);
-                File file = new File(data); //This constructor creates wave_anim new File instance by converting the given pathname string into an abstract pathname which helps to get the value when the file was last modified by calling file.lastModified()
-                Date date = new Date(file.lastModified());
-                SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
+                try {
+                    retriever.setDataSource(data);
+                }catch (Exception e){
+                    recFoundStatus = false;
 
-                modelRecordings.setDate(format.format(date));
-                modelRecordings.setUri(Uri.parse(data));
-
+                    Log.d("TAGG", "getAudioRecordings: " + e.getMessage());
+                }
                 //fetch the audio duration using MediaMetadataRetriever class
-                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(data);
 
-                String duration = timeConversion(Long.parseLong(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)));
+                if (recFoundStatus == false){
 
-                modelRecordings.setDuration(duration);
+                    recFoundStatus = true;
+                }
+                else {
+                    String duration = timeConversion(Long.parseLong(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)));
 
-                String fileFomat = recordingFormat;
-                modelRecordings.setFormat(fileFomat);
+                    // below two lines for get row uri for delete the recording
 
-                audioArrayList.add(modelRecordings);
+                    String strRecordingRowUri = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    Uri recordingRowUri = Uri.parse(strRecordingRowUri);
+
+                    ModelRecordings modelRecordings = new ModelRecordings();
+                    modelRecordings.setDbRowUri(recordingRowUri);
+                    modelRecordings.setTitle(title);
+                    File file = new File(data); //This constructor creates wave_anim new File instance by converting the given pathname string into an abstract pathname which helps to get the value when the file was last modified by calling file.lastModified()
+                    Date date = new Date(file.lastModified());
+                    SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
+
+                    modelRecordings.setDate(format.format(date));
+                    modelRecordings.setUri(Uri.parse(data));
+
+                    modelRecordings.setDuration(duration);
+
+                    String fileFomat = recordingFormat;
+                    modelRecordings.setFormat(fileFomat);
+
+                    audioArrayList.add(modelRecordings);
+                }
+
+
 
             } while(cursor.moveToNext() && cursor1.moveToNext());
         }
@@ -297,6 +318,8 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 
     private void initialization() {
 
+        retriever = new MediaMetadataRetriever();
+
         audioArrayList = new ArrayList<>();
 
         animSlideUp = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_up);
@@ -305,8 +328,6 @@ public class TrackFragment extends Fragment implements View.OnClickListener {
 //        if (player==null){
 //            player = new MediaPlayer();
 //        }
-
-
     }
 
     private void viewBindings() {

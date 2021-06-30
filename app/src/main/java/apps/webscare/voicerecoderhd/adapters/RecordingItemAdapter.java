@@ -2,6 +2,7 @@ package apps.webscare.voicerecoderhd.adapters;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
@@ -225,6 +226,7 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
 
     private void showPopup(View v, final int pos) {
 
+
 //        add oncreta option menu in main activity
         PopupMenu popup = new PopupMenu(context, v);
         MenuInflater inflater = popup.getMenuInflater();
@@ -235,9 +237,20 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
+                File myDirectory  = Environment.getExternalStorageDirectory();
+
                 switch (item.getItemId()){
                     case R.id.share:
+
                         Toast.makeText(context, "Share", Toast.LENGTH_SHORT).show();
+
+                        String sharePath = Environment.getExternalStorageDirectory().getPath() + "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." +  audioArrayList.get(pos).getFormat();
+                        Uri uri = Uri.parse(sharePath);
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.setType("audio/*");
+                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                        context.startActivity(Intent.createChooser(share, "Share Sound File"));
+
 
                         return true;
                     case R.id.rename:
@@ -246,17 +259,14 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
                     case R.id.delete:
                         Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
 
-                        File myDirectory  = Environment.getExternalStorageDirectory();
+                        myDirectory  = Environment.getExternalStorageDirectory();
                         File file = new File(myDirectory, "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." + audioArrayList.get(pos).getFormat());
                         boolean checkStatus = file.delete();
 
-                        String path = myDirectory.getAbsolutePath() + "VoiceRecorderHD/" + audioArrayList.get(pos).getTitle() + "." +  audioArrayList.get(pos).getFormat();
 
-//                        Log.d("path", "onMenuItemClick: " + path);
 
-//                        Uri urii = audioArrayList.get(pos).getDbRowUri();
-//
-//                        context.getContentResolver().delete(audioArrayList.get(pos).getDbRowUri(),null,null);
+//                        Uri recordingRowUri = audioArrayList.get(pos).getDbRowUri();
+//                        context.getContentResolver().delete(recordingRowUri,null,null);
 
                         audioArrayList.remove(pos);
                         notifyItemRemoved(pos);
@@ -266,11 +276,13 @@ public class RecordingItemAdapter extends RecyclerView.Adapter<RecordingItemAdap
 //                        String[] args = new String[] { path };
 //                        context.getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,where,args);
 
-                        RecorderFragment recorderFragment = new RecorderFragment();
-                        Uri uri = Uri.parse(RecorderFragment.sUri);
-                        context.getContentResolver().delete(uri,null,null);
+//                        RecorderFragment recorderFragment = new RecorderFragment();
+//                        Uri uri = Uri.parse(RecorderFragment.sUri);
+//                        context.getContentResolver().delete(audioArrayList.get(pos).getDbRowUri(),null,null);
 
 //                        context.getContentResolver().notifyChange (uri, null);
+
+
 
                         return true;
                     default:
